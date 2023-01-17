@@ -1,7 +1,8 @@
 from fastapi import FastAPI, status
-from database import Base, engine, ToDo
+from database.database import Base, engine, PlayerDB
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from business_object.player import Player
 
 # Create ToDoRequest Base Model
 class ToDoRequest(BaseModel):
@@ -14,22 +15,25 @@ Base.metadata.create_all(engine)
 app = FastAPI()
 
 # <irrelevant code here..>
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 @app.post("/player", status_code=status.HTTP_201_CREATED)
-def create_todo(todo: ToDoRequest):
+def create_todo(player: Player):
 
     # create a new database session
     session = Session(bind=engine, expire_on_commit=False)
 
     # create an instance of the ToDo database model
-    tododb = ToDo(task = todo.task)
+    playerdb = Player(name = player.name,surname=player.surname,)
 
     # add it to the session and commit it
-    session.add(tododb)
+    session.add(playerdb)
     session.commit()
 
     # grab the id given to the object from the database
-    id = tododb.id
+    id = playerdb.id
 
     # close the session
     session.close()

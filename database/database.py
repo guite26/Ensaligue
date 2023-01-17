@@ -21,7 +21,7 @@ Session = sessionmaker(bind=engine)
 Base = declarative_base()
 
 # Define To Do class inheriting from Base
-class Player(Base):
+class PlayerDB(Base):
     __tablename__ = 'player'
     id_player = Column(Integer, Sequence("player_id_seq"), primary_key=True,nullable=False)
     name = Column(String(256),nullable=False)
@@ -29,13 +29,13 @@ class Player(Base):
     birth_data = Column(Date,nullable=False)
     id_team = Column(Integer,ForeignKey("team.id_team"),nullable=False)
 
-class Team(Base):
+class TeamDB(Base):
     __tablename__ = 'team'
     id_team = Column(Integer, Sequence("team_id_seq"), primary_key=True,nullable=False)
     name = Column(String(256),nullable=False)
     id_league = Column(String(256),ForeignKey("league.id_league"),nullable=False)
 
-class League(Base):
+class LeagueDB(Base):
     __tablename__ = 'league'
     id_league = Column(Integer, Sequence("league_id_seq"), primary_key=True,nullable=False)
     name = Column(String(256),nullable=False)
@@ -44,7 +44,7 @@ class League(Base):
     id_inten_salary_grid = Column(Integer,ForeignKey("league.id_league"),nullable=False)
     professional_minimum_wage = Column(Integer,nullable=False)
 
-class Contract(Base):
+class ContractDB(Base):
     __tablename__ = 'contract'
     id_contract = Column(Integer, Sequence("contract_id_seq"), primary_key=True,nullable=False)
     id_player = Column(String(256),ForeignKey("player.id_player"),nullable=False)
@@ -55,11 +55,10 @@ class Contract(Base):
     total_salary = Column(Integer,nullable=False)
     type_contract = Column(String(256),nullable=False)
 
-class InternSalaryGrid(Base):
+class InternSalaryGridDB(Base):
     __tablename__ = 'intern_salary_grid'
     id_intern_salary_grid = Column(Integer, Sequence("id_intern_salary_grid_id_seq"), primary_key=True,nullable=False)
     daily_salary_first_year = Column(Integer,nullable=False)
     daily_salary_second_year = Column(Integer,nullable=False)
     daily_salary_third_year = Column(Integer,nullable=False)
-print("ok2")
 Base.metadata.create_all(engine)
