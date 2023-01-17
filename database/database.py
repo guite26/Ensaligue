@@ -17,7 +17,6 @@ url_object = URL.create(
 # Create a sqlite engine instance
 engine = create_engine("sqlite:///ensaleague")
 Session = sessionmaker(bind=engine)
-print("ok")
 # Create a DeclarativeMeta instance
 Base = declarative_base()
 
