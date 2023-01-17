@@ -6,4 +6,4 @@ class InternSalaryGrid:
         self.daily_salary_seconde_year = daily_salary_second_year
         self.daily_salary_thrid_year = daily_salary_thrid_year
 
-    
+   
