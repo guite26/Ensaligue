@@ -25,9 +25,10 @@ class PlayerDB(Base):
     __tablename__ = 'player'
     id_player = Column(Integer, Sequence("player_id_seq"), primary_key=True,nullable=False)
     name = Column(String(256),nullable=False)
-    surnname = Column(String(256),nullable=False)
-    birth_data = Column(Date,nullable=False)
-    id_team = Column(Integer,ForeignKey("team.id_team"),nullable=False)
+    surname = Column(String(256),nullable=False)
+    birth_date = Column(Date,nullable=False)
+    id_team = Column(Integer,ForeignKey("team.id_team"))
+    position = Column(String(256),nullable=False)
 
 class TeamDB(Base):
     __tablename__ = 'team'
