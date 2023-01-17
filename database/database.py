@@ -1,12 +1,21 @@
 from sqlalchemy import create_engine, Column, Integer, String, Identity,MetaData, Sequence, ForeignKey, Date
+from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 import os
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 load_dotenv()
 print(os.environ.get('PORT'))
+url_object = URL.create(
+    drivername="postgresql+psycopg2",
+    username=os.environ.get('USER'),
+    password=os.environ.get('PASSWORD'),  # plain (unescaped) text
+    host=os.environ.get('HOST_WEBSERVICE'),
+    database=os.environ.get('DATABASE'),
+    port=os.environ.get('PORT')
+)
 # Create a sqlite engine instance
-engine = create_engine(f"postgresql+psycopg2://{os.environ.get('USER')}:{os.environ.get('PASSWORD')}@{os.environ.get('HOST')}:{os.environ.get('PORT')}/{os.environ.get('DATABASE')}")
+engine = create_engine("sqlite:///ensaleague")
 Session = sessionmaker(bind=engine)
 print("ok")
 # Create a DeclarativeMeta instance
@@ -33,7 +42,7 @@ class League(Base):
     name = Column(String(256),nullable=False)
     country = Column(String(256),nullable=False)
     level = Column(Integer,nullable=False)
-    id_inten_salary_grid = Column(Integer,ForeignKey("league.id"),nullable=False)
+    id_inten_salary_grid = Column(Integer,ForeignKey("league.id_league"),nullable=False)
     professional_minimum_wage = Column(Integer,nullable=False)
 
 class Contract(Base):
