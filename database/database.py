@@ -61,5 +61,5 @@ class InternSalaryGrid(Base):
     daily_salary_first_year = Column(Integer,nullable=False)
     daily_salary_second_year = Column(Integer,nullable=False)
     daily_salary_third_year = Column(Integer,nullable=False)
-print("ok2")
+
 Base.metadata.create_all(engine)
