@@ -5,3 +5,4 @@ class Player :
         self.surname = surname
         self.birth_date = birth_date
         self.position = positon
+        
