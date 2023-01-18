@@ -33,7 +33,6 @@ class PlayerDB(Base):
             "id_player" : self.id_player,
             "name" : self.name,
             "surname" : self.surname,
-            "id_team" : self.id_team,
             "birth_date" : self.birth_date,
             "position" : self.position
         }
