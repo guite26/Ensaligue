@@ -2,7 +2,7 @@ from fastapi import FastAPI, status
 from database.database import Base, engine, PlayerDB
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from business_object.player import Player
+from business_objects.player import Player
 
 # Create ToDoRequest Base Model
 class ToDoRequest(BaseModel):
