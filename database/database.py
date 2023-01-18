@@ -2,10 +2,9 @@ from sqlalchemy import create_engine, Column, Integer, String, Identity,MetaData
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 import os
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 load_dotenv()
-print(os.environ.get('PORT'))
 url_object = URL.create(
     drivername="postgresql+psycopg2",
     username=os.environ.get('USER'),
@@ -15,8 +14,8 @@ url_object = URL.create(
     port=os.environ.get('PORT')
 )
 # Create a sqlite engine instance
-engine = create_engine("sqlite:///ensaleague")
-Session = sessionmaker(bind=engine)
+engine = create_engine("sqlite:///ensaleague.db")
+session = Session(bind=engine)
 # Create a DeclarativeMeta instance
 Base = declarative_base()
 
@@ -30,6 +29,17 @@ class PlayerDB(Base):
     id_team = Column(Integer,ForeignKey("team.id_team"))
     position = Column(String(256),nullable=False)
 
+    def as_dict(self) -> str:
+        dict_repr = {
+            "id_player" : self.id_player,
+            "name" : self.name,
+            "surname" : self.surname,
+            "id_team" : self.id_team,
+            "birth_date" : self.birth_date,
+            "position" : self.position
+        }
+        return dict_repr
+    
 class TeamDB(Base):
     __tablename__ = 'team'
     id_team = Column(Integer, Sequence("team_id_seq"), primary_key=True,nullable=False)
@@ -47,9 +57,8 @@ class LeagueDB(Base):
 
 class ContractDB(Base):
     __tablename__ = 'contract'
-    id_contract = Column(Integer, Sequence("contract_id_seq"), primary_key=True,nullable=False)
-    id_player = Column(String(256),ForeignKey("player.id_player"),nullable=False)
-    id_team = Column(Integer,ForeignKey("team.id_team"))
+    id_player = Column(String(256),ForeignKey("player.id_player"),nullable=False,primary_key=True)
+    id_team = Column(Integer,ForeignKey("team.id_team"),nullable=False,primary_key=True)
     country = Column(String(256),nullable=False)
     date_start = Column(Date,nullable=False)
     date_end = Column(Date,nullable=False)

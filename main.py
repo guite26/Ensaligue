@@ -1,8 +1,10 @@
 from fastapi import FastAPI, status, APIRouter
+from fastapi.encoders import jsonable_encoder
 from database.database import Base, engine, PlayerDB
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from business_objects.player import Player
+from service.playerService import PlayerService
 
 router = APIRouter()
 
@@ -11,7 +13,6 @@ Base.metadata.create_all(engine)
 
 # Initialize app
 app = FastAPI()
-
 # <irrelevant code here..>
 @app.get("/")
 async def root():
@@ -19,24 +20,19 @@ async def root():
 
 @app.post("/player", status_code=status.HTTP_201_CREATED,tags=['player'])
 def add_player(player: Player):
+    playerService = PlayerService()
+    res = playerService.add_player(player)
+    return res
 
-    # create a new database session
-    session = Session(bind=engine, expire_on_commit=False)
+@app.get("/player/{id}", status_code=status.HTTP_201_CREATED,tags=['player'])
+def get_player_by_id(id:int):
+    playerService = PlayerService()
+    res = playerService.get_player_by_id(id)
+    return res
 
-    # create an instance of the ToDo database model
-    playerdb = PlayerDB(name = player.name,surname=player.surname,birth_date=player.birth_date,position=player.position)
-
-    # add it to the session and commit it
-    session.add(playerdb)
-    session.commit()
-
-    # grab the id given to the object from the database
-    id = playerdb.id_player
-
-    # close the session
-    session.close()
-
-    # return the id
-    return f"created todo item with id {id}"
-
-# <irrelevant code here..>
+@app.get("/player/", status_code=status.HTTP_201_CREATED,tags=['player'])
+def get_all_players():
+    playerService = PlayerService()
+    res = playerService.get_all_players()
+    return res
+    
