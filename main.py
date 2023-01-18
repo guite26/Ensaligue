@@ -1,10 +1,12 @@
 from fastapi import FastAPI, status, APIRouter
 from fastapi.encoders import jsonable_encoder
-from database.database import Base, engine, PlayerDB
+from database.database import Base, engine, PlayerDB , InternSalaryGridDB
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from business_objects.player import Player
+from business_objects.internSalaryGrid import InternSalaryGrid
 from service.playerService import PlayerService
+from service.internSalaryGridService import InternSalaryGridService
 
 router = APIRouter()
 
@@ -24,10 +26,23 @@ def add_player(player: Player):
     res = playerService.add_player(player)
     return res
 
+@app.post("/internSalaryGrid", status_code=status.HTTP_201_CREATED,tags=['internSalaryGridService'])
+def add_internSalaryGrid(internSalaryGrid: InternSalaryGrid):
+    internSalaryGridService = InternSalaryGridService()
+    res = internSalaryGridService.add_player(internSalaryGrid)
+    return res
+
+
 @app.get("/player/{id}", status_code=status.HTTP_201_CREATED,tags=['player'])
 def get_player_by_id(id:int):
     playerService = PlayerService()
     res = playerService.get_player_by_id(id)
+    return res
+
+@app.get("/internSalaryGrid/{id}", status_code=status.HTTP_201_CREATED,tags=['internSalaryGrid'])
+def get_internSalaryGrid_by_id(id:int):
+    internSalaryGridService = InternSalaryGridService()
+    res = internSalaryGridService.get_internSalaryGrid_by_id(id)
     return res
 
 @app.get("/player/", status_code=status.HTTP_201_CREATED,tags=['player'])
@@ -35,4 +50,10 @@ def get_all_players():
     playerService = PlayerService()
     res = playerService.get_all_players()
     return res
-    
+
+
+@app.get("/internSalaryGrid/", status_code=status.HTTP_201_CREATED,tags=['internSalaryGrid'])
+def get_all_internSalaryGrid():
+    internSalaryGridService = InternSalaryGridService()
+    res = internSalaryGridService.get_all_internSalaryGrid()
+    return res

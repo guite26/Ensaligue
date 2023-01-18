@@ -71,4 +71,14 @@ class InternSalaryGridDB(Base):
     daily_salary_first_year = Column(Integer,nullable=False)
     daily_salary_second_year = Column(Integer,nullable=False)
     daily_salary_third_year = Column(Integer,nullable=False)
+
+    def as_dict(self) -> str:
+        dict_repr = {
+            "id_intern_salary_grid" : self.id_intern_salary_grid,
+            "daily_salary_first_year" : self.daily_salary_first_year,
+            "daily_salary_second_year" : self.daily_salary_second_year,
+            "daily_salary_third_year" : self.daily_salary_third_year
+        }
+        return dict_repr
+
 Base.metadata.create_all(engine)
