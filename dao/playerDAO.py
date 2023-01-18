@@ -24,3 +24,4 @@ class PlayerDAO():
         # add it to the session and commit it
         all_players = session.query(PlayerDB).all()
         return all_players
+        

@@ -25,3 +25,4 @@ class internSalaryGridDAO():
         # add it to the session and commit it
         all_internSalaryGrid = session.query(InternSalaryGridDB).all()
         return all_internSalaryGrid
+        
