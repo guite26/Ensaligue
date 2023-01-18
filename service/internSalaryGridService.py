@@ -22,7 +22,7 @@ class InternSalaryGridService():
             return False
 
 
-    def add_internSalaryGridDAO(self,internSalaryGrid:InternSalaryGrid) -> str : 
+    def add_internSalaryGrid(self,internSalaryGrid:InternSalaryGrid) -> str : 
         if not self.is_valid_salary(internSalaryGrid.daily_salary_first_year,internSalaryGrid.daily_salary_seconde_year,internSalaryGrid.daily_salary_third_year):
             return f"{internSalaryGrid.daily_salary_third_year} is not a valid salary"
 
