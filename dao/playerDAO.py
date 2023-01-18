@@ -1,6 +1,7 @@
 from database.database import PlayerDB, engine, session
 from sqlalchemy.orm import Query
 from typing import List
+
 class PlayerDAO():
     def __init__(self):
         pass

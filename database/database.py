@@ -67,17 +67,5 @@ class ContractDB(Base):
     total_salary = Column(Integer,nullable=False)
     type_contract = Column(String(256),nullable=False)
 
-class InternSalaryGridDB(Base):
-    __tablename__ = 'intern_salary_grid'
-    id_intern_salary_grid = Column(Integer, Sequence("id_intern_salary_grid_id_seq"), primary_key=True,nullable=False)
-
-    def as_dict(self) -> Dict:
-        dict_repr = {
-            "id_intern_salary_grid" : self.id_intern_salary_grid,
-            "daily_salary_first_year" : self.daily_salary_first_year,
-            "daily_salary_second_year" : self.daily_salary_second_year,
-            "daily_salary_third_year" : self.daily_salary_third_year
-        }
-        return dict_repr
 
 Base.metadata.create_all(engine)
