@@ -26,7 +26,6 @@ class PlayerDB(Base):
     name = Column(String(256),nullable=False)
     surname = Column(String(256),nullable=False)
     birth_date = Column(Date,nullable=False)
-    id_team = Column(Integer,ForeignKey("team.id_team"))
     position = Column(String(256),nullable=False)
 
     def as_dict(self) -> str:
@@ -57,8 +56,9 @@ class LeagueDB(Base):
 
 class ContractDB(Base):
     __tablename__ = 'contract'
-    id_player = Column(String(256),ForeignKey("player.id_player"),nullable=False,primary_key=True)
-    id_team = Column(Integer,ForeignKey("team.id_team"),nullable=False,primary_key=True)
+    id_contract = Column(Integer, Sequence("contract_id_seq"), primary_key=True,nullable=False)
+    id_player = Column(String(256),ForeignKey("player.id_player"),nullable=False)
+    id_team = Column(Integer,ForeignKey("team.id_team"),nullable=False)
     country = Column(String(256),nullable=False)
     date_start = Column(Date,nullable=False)
     date_end = Column(Date,nullable=False)

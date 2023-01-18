@@ -17,7 +17,6 @@ class PlayerDAO():
     def get_player_by_id(self,id:int) -> PlayerDB:
         # add it to the session and commit it
         playerdb = session.get(entity=PlayerDB,ident=id)
-        print(playerdb.id_player)
         session.commit()
         return playerdb
 
