@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from business_objects.player import Player
 from business_objects.league import League
 from service.playerService import PlayerService
-#from service.leagueService import LeagueService
+from service.leagueService import LeagueService
 
 
 router = APIRouter()
@@ -45,7 +45,26 @@ def get_all_players():
     return res
 
 
+
 @app.post("/league", status_code=status.HTTP_201_CREATED,tags=['league'])
-def add_team(league: League):
-    LeagueService = LeagueService()
-    res = LeagueService.add_league(league)
+def add_league(league: League):
+    leagueService = LeagueService()
+    res = leagueService.add_league(league)
+    return res
+
+
+
+
+@app.get("/league/{id}", status_code=status.HTTP_201_CREATED,tags=['league'])
+def get_league_by_id(id:int):
+    leagueService = LeagueService()
+    res = leagueService.get_league_by_id(id)
+    return res
+
+
+
+@app.get("/league/", status_code=status.HTTP_201_CREATED,tags=['league'])
+def get_all_leagues():
+    leagueService = LeagueService()
+    res = leagueService.get_all_leagues()
+    return res

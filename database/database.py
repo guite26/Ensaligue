@@ -56,6 +56,19 @@ class LeagueDB(Base):
     daily_salary_second_year = Column(Float,nullable=False)
     daily_salary_third_year = Column(Float,nullable=False)
 
+    def as_dict(self) -> Dict:
+        dict_repr = {
+            "id_league" : self.id_league,
+            "name" : self.name,
+            "country" : self.country,
+            "level" : self.level,
+            "professional_minimum_wage" : self.professional_minimum_wage,
+            "daily_salary_first_year" : self.daily_salary_first_year,
+            "daily_salary_second_year" : self.daily_salary_second_year,
+            "daily_salary_third_year" : self.daily_salary_third_year
+        }
+        return dict_repr
+
 class ContractDB(Base):
     __tablename__ = 'contract'
     id_contract = Column(Integer, Sequence("contract_id_seq"), primary_key=True,nullable=False)
