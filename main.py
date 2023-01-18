@@ -4,11 +4,9 @@ from database.database import Base, engine, PlayerDB , InternSalaryGridDB, Leagu
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from business_objects.player import Player
-from business_objects.internSalaryGrid import InternSalaryGrid
 from business_objects.league import League
 from service.playerService import PlayerService
-from service.internSalaryGridService import InternSalaryGridService
-from service.leagueService import LeagueService
+#from service.leagueService import LeagueService
 
 
 router = APIRouter()
@@ -47,27 +45,7 @@ def get_all_players():
     return res
 
 
-@app.post("/internSalaryGrid", status_code=status.HTTP_201_CREATED,tags=['internSalaryGrid'])
-def add_internSalaryGrid(internSalaryGrid: InternSalaryGrid):
-    internSalaryGridService = InternSalaryGridService()
-    res = internSalaryGridService.add_internSalaryGrid(internSalaryGrid)
-    return res
-
-@app.get("/internSalaryGrid/{id}", status_code=status.HTTP_201_CREATED,tags=['internSalaryGrid'])
-def get_internSalaryGrid_by_id(id:int):
-    internSalaryGridService = InternSalaryGridService()
-    res = internSalaryGridService.get_internSalaryGrid_by_id(id)
-    return res
-
-@app.get("/internSalaryGrid/", status_code=status.HTTP_201_CREATED,tags=['internSalaryGrid'])
-def get_all_internSalaryGrid():
-    internSalaryGridService = InternSalaryGridService()
-    res = internSalaryGridService.get_all_internSalaryGrid()
-    return res
-
-
 @app.post("/league", status_code=status.HTTP_201_CREATED,tags=['league'])
 def add_team(league: League):
     LeagueService = LeagueService()
     res = LeagueService.add_league(league)
-    return res
