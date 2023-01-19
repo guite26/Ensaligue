@@ -43,7 +43,7 @@ class LeagueService():
     def get_league_by_id(self,id:int) -> LeagueDB:
         dao = LeagueDAO()
         leagueDB = dao.get_league_by_id(id)
-        if LeagueDB:
+        if leagueDB:
             return leagueDB.as_dict()
         else :
             return {"message":f'The league with id {id} does not exist'}

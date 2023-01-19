@@ -5,9 +5,10 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from business_objects.player import Player
 from business_objects.league import League
+from business_objects.team import Team
 from service.playerService import PlayerService
 from service.leagueService import LeagueService
-
+from service.teamService import TeamService
 
 router = APIRouter()
 
@@ -68,3 +69,30 @@ def get_all_leagues():
     leagueService = LeagueService()
     res = leagueService.get_all_leagues()
     return res
+
+
+@app.post("/team", status_code=status.HTTP_201_CREATED,tags=['team'])
+def add_team(team: Team):
+    teamService = TeamService()
+    res = teamService.add_team(team)
+    return res
+
+@app.get("/team/{id}", status_code=status.HTTP_201_CREATED,tags=['team'])
+def get_team_by_id(id:int):
+    teamService = TeamService()
+    res = teamService.get_team_by_id(id)
+    return res
+
+@app.get("/team/", status_code=status.HTTP_201_CREATED,tags=['team'])
+def get_all_teams():
+    teamService = TeamService()
+    res = teamService.get_all_teams()
+    return res
+
+
+@app.get("/team/{id_league}", status_code=status.HTTP_201_CREATED,tags=['team'])
+def get_all_teams_by_id_league(id_league :int):
+    teamService = TeamService()
+    res = teamService.get_all_teams_by_id_league()
+    return res
+

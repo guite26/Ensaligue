@@ -45,6 +45,16 @@ class TeamDB(Base):
     name = Column(String(256),nullable=False)
     id_league = Column(String(256),ForeignKey("league.id_league"),nullable=False)
 
+    def as_dict(self) -> Dict:
+        dict_repr = {
+            "id_team" : self.id_team,
+            "name" : self.name,
+            "id_league" : self.id_league,
+
+        }
+        return dict_repr
+
+
 class LeagueDB(Base):
     __tablename__ = 'league'
     id_league = Column(Integer, Sequence("league_id_seq"), primary_key=True,nullable=False)
