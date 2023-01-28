@@ -12,7 +12,7 @@ class LeagueService():
         try:
 
             # Compare salary
-            if internSalaryGrid[0]<internSalaryGrid[1] & internSalaryGrid[1]<internSalaryGrid[2] :
+            if (internSalaryGrid[0]<internSalaryGrid[1]) & (internSalaryGrid[1]<internSalaryGrid[2]) :
                 return True
             else:
                 return False

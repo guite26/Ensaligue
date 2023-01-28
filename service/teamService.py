@@ -1,5 +1,5 @@
 from dao.teamDAO import TeamDAO
-from business_objects.team import Team
+from business_objects.team import Team, TeamModel
 from database.database import TeamDB
 from datetime import date
 from typing import List, Dict
@@ -22,13 +22,11 @@ class TeamService():
             return False
 
 
-
-
-    def add_team(self,team:Team) -> str : 
+    def add_team(self,team:TeamModel) -> str : 
         if not self.is_valid_id_league(team.id_league):
             return f"{team.id_league} is not a valid id league"
 
-        teamDB = TeamDB(name = team.name,id_league = team.id_league )
+        teamDB = TeamDB(name = team.name,id_league = team.id_league)
         dao = TeamDAO()
         id = dao.add_team(teamDB)
         return f"created todo item with id {id}"
@@ -40,7 +38,7 @@ class TeamService():
         res = {"teams": [team.as_dict() for team in all_teams]}
         return res
 
-    def get_team_by_id(self,id:int) -> TeamDB:
+    def get_team_by_id(self,id:int) -> Dict:
         dao = TeamDAO()
         teamDB = dao.get_team_by_id(id)
         if teamDB:

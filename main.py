@@ -1,11 +1,11 @@
 from fastapi import FastAPI, status, APIRouter
 from fastapi.encoders import jsonable_encoder
-from database.database import Base, engine, PlayerDB , InternSalaryGridDB, LeagueDB
+from database.database import Base, engine
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from business_objects.player import Player
 from business_objects.league import League
-from business_objects.team import Team
+from business_objects.team import Team, TeamModel
 from service.playerService import PlayerService
 from service.leagueService import LeagueService
 from service.teamService import TeamService
@@ -72,7 +72,7 @@ def get_all_leagues():
 
 
 @app.post("/team", status_code=status.HTTP_201_CREATED,tags=['team'])
-def add_team(team: Team):
+def add_team(team: TeamModel):
     teamService = TeamService()
     res = teamService.add_team(team)
     return res
@@ -93,6 +93,6 @@ def get_all_teams():
 @app.get("/team/{id_league}", status_code=status.HTTP_201_CREATED,tags=['team'])
 def get_all_teams_by_id_league(id_league :int):
     teamService = TeamService()
-    res = teamService.get_all_teams_by_id_league()
+    res = teamService.get_all_teams_by_id_league(id_league)
     return res
 
