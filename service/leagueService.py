@@ -10,7 +10,6 @@ class LeagueService():
 
     def is_valid_intern_salary_grid(self,internSalaryGrid):
         try:
-
             # Compare salary
             if (internSalaryGrid[0]<internSalaryGrid[1]) & (internSalaryGrid[1]<internSalaryGrid[2]) :
                 return True
