@@ -8,7 +8,7 @@ class ComputationProStrategy(AbstractComputationStrategy):
 
     def __init__(self) -> None:
         super().__init__()
-    def compute_duration(player: Player, date_start: date,duration):
+    def compute_duration(self,player: Player, date_start: date,duration:int):
         if duration<1 :
             raise ValueError("Le temps de contrat doit être de minimum 1 an.")
         else :

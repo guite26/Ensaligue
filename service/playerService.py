@@ -34,7 +34,7 @@ class PlayerService():
         playerdb = PlayerDB(name = player.name,surname=player.surname,birth_date=player.birth_date,position=player.position)
         dao = PlayerDAO()
         id = dao.add_player(playerdb)
-        return f"created todo item with id {id}"
+        return f"created player with id {id}"
 
     def get_all_players(self)-> List[Dict]:
         dao = PlayerDAO()

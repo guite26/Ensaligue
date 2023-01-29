@@ -84,7 +84,6 @@ class ContractDB(Base):
     id_contract = Column(Integer, Sequence("contract_id_seq"), primary_key=True,nullable=False)
     id_player = Column(String(256),ForeignKey("player.id_player"),nullable=False)
     id_team = Column(Integer,ForeignKey("team.id_team"),nullable=False)
-    country = Column(String(256),nullable=False)
     date_start = Column(Date,nullable=False)
     date_end = Column(Date,nullable=False)
     total_salary = Column(Integer,nullable=False)

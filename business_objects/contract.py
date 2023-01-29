@@ -1,22 +1,22 @@
 from pydantic.main import BaseModel
 from business_objects.team import Team
 from datetime import date
-from typing import Union
+from typing import Union, Literal
 
-from player import Player
-from team import Team
+from business_objects.player import Player
+from business_objects.team import Team
 from datetime import date, datetime
 from abc import ABC, abstractmethod
 
-from service.computeSalaryStrategy import ComputeSalaryStrategy
+from service.abstract_computation_strategy import AbstractComputationStrategy
 
 class ContractModel(BaseModel):
     id_player : int
     id_team : int 
     date_start : date
-    duration = int
+    duration : Union[int,None] = None
     salary : Union[int,None] = None
-
+    type_contract : Literal['professional','intern']
     
 class Contract() :
     def __init__(self,player : Player,team : Team,date_start : date,duration:int=None,salary:int=None) -> None:
@@ -25,22 +25,22 @@ class Contract() :
         self.date_start = date_start
         self.duration = duration
         self.salary = salary
-        self._compute_salary_strategy : ComputeSalaryStrategy
+        self._computation_strategy : AbstractComputationStrategy
     
     @property
-    def salary(self):
-        return self.salary
+    def computation_strategy(self):
+        return self._computation_strategy
+    
+    @computation_strategy.setter
+    def computation_strategy(self,computation_strategy:AbstractComputationStrategy):
+        self._computation_strategy = computation_strategy
+    
+    def compute_duration(self):
+        self.duration = self._computation_strategy.compute_duration(self.player,self.date_start,self.duration)
 
-    @property
-    def end_date(self):
-        return self.end_date
-    @property
-    def compute_salary_strategy(self):
-        return self._compute_salary_strategy
-    
-    @compute_salary_strategy.setter
-    def compute_salary_strategy(self,compute_salary_strategy:ComputeSalaryStrategy):
-        self._compute_salary_strategy = compute_salary_strategy
-    
+    def compute_end_date(self):
+        self.date_end = self._computation_strategy.compute_end_date(self.date_start,self.duration)
+
     def compute_salary(self):
-        self._compute_salary_strategy.compute_salary(self.player,self.team.league,self.date_start,self.end_date, self.salary)
+        self.salary = self._computation_strategy.compute_salary(self.team.league,self.date_start,self.duration,self.salary)
+    

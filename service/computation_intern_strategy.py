@@ -9,15 +9,15 @@ class ComputationInternStrategy(AbstractComputationStrategy):
     def __init__(self) -> None:
         super().__init__()
     
-    def compute_duration(player: Player, date_start: Optional[date] = None, duration: Optional[int] = None):
+    def compute_duration(self,player: Player, date_start: Optional[date] = None, duration: Optional[int] = None):
         duration = (player.birth_date.year+20) - date_start.year if (date(date_start.year,6,30)<date_start) else player.birth_date.year +20 -date_start.year +1
         if duration <= 0 :
             raise ValueError("Le joueuer est trop agé pour signer un contrat stagiaire")
         elif duration >=4 :
             raise ValueError("Le joueuer est trop jeune pour signer un contrat stagiaire")
         else :
-            duration = duration
-
+            return duration
+            
     def compute_end_date(self, date_start:date,duration:int):
         if duration<1 :
             raise ValueError("Le temps de contrat doit être de minimum 1 an.")

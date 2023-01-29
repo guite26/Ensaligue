@@ -7,7 +7,7 @@ from typing import Optional
 class AbstractComputationStrategy(ABC):
 
     @abstractmethod
-    def compute_duration(player:Player,date_start:Optional[date] = None,duration:Optional[int] = None):
+    def compute_duration(self,player:Player,date_start:Optional[date] = None,duration:Optional[int] = None):
         return
 
     @abstractmethod
