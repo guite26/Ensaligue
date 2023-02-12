@@ -1,9 +1,10 @@
-from sqlalchemy import create_engine, Column, Integer, String, Identity,MetaData, Sequence, ForeignKey, Date
+from sqlalchemy import create_engine, Column, Integer, String, Identity,MetaData, Sequence, ForeignKey, Date, Float
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 import os
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
+from typing import Dict
 load_dotenv()
 url_object = URL.create(
     drivername="postgresql+psycopg2",
@@ -28,12 +29,11 @@ class PlayerDB(Base):
     birth_date = Column(Date,nullable=False)
     position = Column(String(256),nullable=False)
 
-    def as_dict(self) -> str:
+    def as_dict(self) -> Dict:
         dict_repr = {
             "id_player" : self.id_player,
             "name" : self.name,
             "surname" : self.surname,
-            "id_team" : self.id_team,
             "birth_date" : self.birth_date,
             "position" : self.position
         }
@@ -51,8 +51,10 @@ class LeagueDB(Base):
     name = Column(String(256),nullable=False)
     country = Column(String(256),nullable=False)
     level = Column(Integer,nullable=False)
-    id_inten_salary_grid = Column(Integer,ForeignKey("league.id_league"),nullable=False)
     professional_minimum_wage = Column(Integer,nullable=False)
+    daily_salary_first_year = Column(Float,nullable=False)
+    daily_salary_second_year = Column(Float,nullable=False)
+    daily_salary_third_year = Column(Float,nullable=False)
 
 class ContractDB(Base):
     __tablename__ = 'contract'
@@ -65,20 +67,5 @@ class ContractDB(Base):
     total_salary = Column(Integer,nullable=False)
     type_contract = Column(String(256),nullable=False)
 
-class InternSalaryGridDB(Base):
-    __tablename__ = 'intern_salary_grid'
-    id_intern_salary_grid = Column(Integer, Sequence("id_intern_salary_grid_id_seq"), primary_key=True,nullable=False)
-    daily_salary_first_year = Column(Integer,nullable=False)
-    daily_salary_second_year = Column(Integer,nullable=False)
-    daily_salary_third_year = Column(Integer,nullable=False)
-
-    def as_dict(self) -> str:
-        dict_repr = {
-            "id_intern_salary_grid" : self.id_intern_salary_grid,
-            "daily_salary_first_year" : self.daily_salary_first_year,
-            "daily_salary_second_year" : self.daily_salary_second_year,
-            "daily_salary_third_year" : self.daily_salary_third_year
-        }
-        return dict_repr
 
 Base.metadata.create_all(engine)

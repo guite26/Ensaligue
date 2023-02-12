@@ -3,6 +3,7 @@ from business_objects.player import Player
 from database.database import PlayerDB
 from datetime import date
 from typing import List, Dict
+
 class PlayerService():
     def __init__(self):
         pass
