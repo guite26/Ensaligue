@@ -26,10 +26,10 @@ class TeamDAO():
         all_teams = session.query(TeamDB).all()
         return all_teams
     
-    def get_all_teams_by_id_league(self,id_league:int) -> List[TeamDB] :
-        teamdb = session.get(entity=TeamDB,id_league=id_league)
-        session.commit()
+    def get_all_teams_by_id_league(self, id_league: int) -> List[TeamDB]:
+        teamdb = session.query(TeamDB).filter_by(TeamDB.id_league == id_league).all()
         return teamdb
+
 
     def delete_team_by_id(self, id: int) -> None:
         team = session.query(TeamDB).filter_by(id_team=id).first()

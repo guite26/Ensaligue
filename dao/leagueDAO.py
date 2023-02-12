@@ -25,3 +25,15 @@ class LeagueDAO():
         # add it to the session and commit it
         all_leagues = session.query(LeagueDB).all()
         return all_leagues
+
+
+    def delete_league_by_id(self,id:int):
+        league = session.query(LeagueDB).filter_by(id_league=id).first()
+        session.delete(league)
+        session.commit()
+
+    def put_league_by_id(self,id:int, league:LeagueDB):
+        old_league = session.query(LeagueDB).filter_by(id_league=id).first()
+        old_league.name = league.name
+        old_league.country = league.country
+        session.commit()
