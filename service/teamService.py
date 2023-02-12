@@ -52,3 +52,23 @@ class TeamService():
         all_teams = dao.get_all_teams_by_id_league(id_league)
         res = {"teams": [team.as_dict() for team in all_teams]}
         return res
+
+    def delete_team_by_id(self, id: int) -> Dict:
+        dao = TeamDAO()
+        team = dao.get_team_by_id(id)
+        if team:
+            dao.delete_team_by_id(id)
+            return {"message": f"The team with id {id} has been deleted"}
+        else:
+            return {"message": f"The team with id {id} does not exist"}
+
+
+    def put_team_by_id(self, id: int, team: Team) -> Dict:
+        dao = TeamDAO()
+        existing_team = dao.get_team_by_id(id)
+        if existing_team:
+            existing_team.name = team.name
+            existing_team.id_league = team.id_league
+            return {"message": f"The team with id {id} has been updated"}
+        else:
+            return {"message": f"The team with id {id} does not exist"}

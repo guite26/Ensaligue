@@ -38,7 +38,7 @@ class PlayerDB(Base):
             "position" : self.position
         }
         return dict_repr
-    
+  
 class TeamDB(Base):
     __tablename__ = 'team'
     id_team = Column(Integer, Sequence("team_id_seq"), primary_key=True,nullable=False)

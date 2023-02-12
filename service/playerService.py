@@ -50,9 +50,33 @@ class PlayerService():
         else :
             return {"message":f'The player with id {id} does not exist'}
 
+    def delete_player_by_id(self, id: int) -> Dict:
+        dao = PlayerDAO()
+        player = dao.get_player_by_id(id)
+        if player:
+            dao.delete_player_by_id(id)
+            return {"message": f"The player with id {id} has been deleted"}
+        else:
+            return {"message": f"The player with id {id} does not exist"}
+   
+    def put_player_by_id(self, id: int, player: Player) -> Dict:
+        dao = PlayerDAO()
+        existing_player = dao.get_player_by_id(id)
+        if existing_player:
+            if not self.is_valid_birthdate(player.birth_date):
+                return {"message": f"{player.birth_date} is not a valid birthdate"}
+            existing_player.name = player.name
+            existing_player.surname = player.surname
+            existing_player.birth_date = player.birth_date
+            existing_player.position = player.position
+            return {"message": f"The player with id {id} has been updated"}
+        else:
+            return {"message": f"The player with id {id} does not exist"}
+
+
 
     
-            
+           
 
 
 

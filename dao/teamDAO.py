@@ -31,3 +31,18 @@ class TeamDAO():
         session.commit()
         return teamdb
 
+    def delete_team_by_id(self, id: int) -> None:
+        team = session.query(TeamDB).filter_by(id_team=id).first()
+        if team:
+            session.delete(team)
+            session.commit()
+        else:
+            raise Exception("Team with id {} not found.".format(id))
+
+
+    def put_team_by_id(self, id: int, team: TeamDB) -> TeamDB:
+        team_to_update = session.query(TeamDB).get(id)
+        if team_to_update:
+            team_to_update.update(team.__dict__)
+            session.commit()
+        return team_to_update

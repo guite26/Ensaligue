@@ -25,4 +25,23 @@ class PlayerDAO():
         # add it to the session and commit it
         all_players = session.query(PlayerDB).all()
         return all_players
+    
+    def delete_player_by_id(self, id: int) -> PlayerDB:
+        player = session.query(PlayerDB).get(id)
+        if player:
+            session.delete(player)
+            session.commit()
+        else:
+            raise Exception("Player with id {} not found.".format(id))
+   
+    def put_player_by_id(self, id: int, player: PlayerDB) -> PlayerDB:
+        player_to_update = session.query(PlayerDB).get(id)
+        if player_to_update:
+            player_to_update.update(player.__dict__)
+            session.commit()
+        return player_to_update
+    
+
+
+
         
