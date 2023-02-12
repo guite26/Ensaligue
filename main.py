@@ -15,15 +15,16 @@ from service.contractService import ContractService
 
 router = APIRouter()
 
-# Create the database
-Base.metadata.create_all(engine)
-
 # Initialize app
 app = FastAPI()
 # <irrelevant code here..>
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(engine)
 
 ############################### PLAYER ########################################
 @app.post("/player", status_code=status.HTTP_201_CREATED,tags=['player'])
@@ -104,7 +105,7 @@ def get_all_teams_by_id_league(id_league :int):
 
 ############################### CONTRACT ########################################
 
-@app.post("/contract", status_code=status.HTTP_201_CREATED,tags=['team'])
+@app.post("/contract", status_code=status.HTTP_201_CREATED,tags=['contract'])
 def add_team(contract: ContractModel):
     contractService = ContractService()
     res = contractService.add_contract(contract)
