@@ -34,7 +34,7 @@ class PlayerService():
         playerdb = PlayerDB(name = player.name,surname=player.surname,birth_date=player.birth_date,position=player.position)
         dao = PlayerDAO()
         id = dao.add_player(playerdb)
-        return f"created todo item with id {id}"
+        return f"created player with id {id}"
 
     def get_all_players(self)-> List[Dict]:
         dao = PlayerDAO()
@@ -42,7 +42,7 @@ class PlayerService():
         res = {"players": [player.as_dict() for player in all_players]}
         return res
 
-    def get_player_by_id(self,id:int) -> PlayerDB:
+    def get_player_by_id(self,id:int) -> Dict:
         dao = PlayerDAO()
         playerdb = dao.get_player_by_id(id)
         if playerdb:

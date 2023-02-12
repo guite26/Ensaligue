@@ -8,3 +8,4 @@ class League(BaseModel) :
     professional_minimum_wage : int
     internSalaryGrid : List[float]
 
+

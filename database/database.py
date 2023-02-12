@@ -45,6 +45,16 @@ class TeamDB(Base):
     name = Column(String(256),nullable=False)
     id_league = Column(String(256),ForeignKey("league.id_league"),nullable=False)
 
+    def as_dict(self) -> Dict:
+        dict_repr = {
+            "id_team" : self.id_team,
+            "name" : self.name,
+            "id_league" : self.id_league,
+
+        }
+        return dict_repr
+
+
 class LeagueDB(Base):
     __tablename__ = 'league'
     id_league = Column(Integer, Sequence("league_id_seq"), primary_key=True,nullable=False)
@@ -56,12 +66,24 @@ class LeagueDB(Base):
     daily_salary_second_year = Column(Float,nullable=False)
     daily_salary_third_year = Column(Float,nullable=False)
 
+    def as_dict(self) -> Dict:
+        dict_repr = {
+            "id_league" : self.id_league,
+            "name" : self.name,
+            "country" : self.country,
+            "level" : self.level,
+            "professional_minimum_wage" : self.professional_minimum_wage,
+            "daily_salary_first_year" : self.daily_salary_first_year,
+            "daily_salary_second_year" : self.daily_salary_second_year,
+            "daily_salary_third_year" : self.daily_salary_third_year
+        }
+        return dict_repr
+
 class ContractDB(Base):
     __tablename__ = 'contract'
     id_contract = Column(Integer, Sequence("contract_id_seq"), primary_key=True,nullable=False)
     id_player = Column(String(256),ForeignKey("player.id_player"),nullable=False)
     id_team = Column(Integer,ForeignKey("team.id_team"),nullable=False)
-    country = Column(String(256),nullable=False)
     date_start = Column(Date,nullable=False)
     date_end = Column(Date,nullable=False)
     total_salary = Column(Integer,nullable=False)
