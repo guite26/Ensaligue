@@ -117,6 +117,23 @@ def add_league(league: League):
     res = leagueService.add_league(league)
     return res
 
+
+
+
+@app.get("/league/{id}", status_code=status.HTTP_201_CREATED,tags=['league'])
+def get_league_by_id(id:int):
+    leagueService = LeagueService()
+    res = leagueService.get_league_by_id(id)
+    return res
+
+
+
+@app.get("/league/", status_code=status.HTTP_201_CREATED,tags=['league'])
+def get_all_leagues():
+    leagueService = LeagueService()
+    res = leagueService.get_all_leagues()
+    return res
+
 @app.get("/league/{id_league}/teams",status_code=status.HTTP_201_CREATED,tags=['league'])
 def get_all_teams_by_id_league(id_league : int) :
     teamService = TeamService()
