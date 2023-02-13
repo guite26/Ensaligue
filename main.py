@@ -184,3 +184,21 @@ def add_cotract(contract: ContractModel):
     contractService = ContractService()
     res = contractService.add_contract(contract)
     return res
+
+@app.get("/contract/{id}", status_code=status.HTTP_201_CREATED,tags=['contract'])
+def get_contract_by_id(id:int):
+    contractService = ContractService()
+    res = contractService.get_contract_by_id(id)
+    return res
+
+@app.get("/contract/", status_code=status.HTTP_201_CREATED,tags=['contract'])
+def get_all_contracts():
+    contractService = ContractService()
+    res = contractService.get_all_contracts()
+    return res
+
+@app.put("/contract/{id_contract}/stop",status_code=status.HTTP_201_CREATED,tags=['contract'])
+def stop_contract_by_id(id_contract :int) :
+    contractService = ContractService()
+    res = contractService.stop_contract_by_id(id_contract)
+    return res

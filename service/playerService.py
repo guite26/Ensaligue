@@ -58,7 +58,7 @@ class PlayerService():
             return {"message": f"The player with id {id} has been deleted"}
         else:
             return {"message": f"The player with id {id} does not exist"}
-   
+  
     def put_player_by_id(self, id: int, player: Player) -> Dict:
         dao = PlayerDAO()
         existing_player = dao.get_player_by_id(id)
@@ -69,3 +69,4 @@ class PlayerService():
             return {"message": f"The player with id {id} has been updated"}
         else:
             return {"message": f"The player with id {id} does not exist"}    
+            

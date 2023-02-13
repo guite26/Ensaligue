@@ -55,6 +55,22 @@ class ContractService():
         id = ContractDAO().add_contract(contract_db)
         return f"created contract with id {id}"
     
+    def get_contract_by_id(self,id : int) -> Dict:
+        dao = ContractDAO()
+        contractdb = dao.get_contract_by_id(id)
+        print("SERVICE",contractdb.__dict__)
+        if contractdb:
+            return contractdb.__dict__
+        else :
+            return {"message":f'The contract with id {id} does not exist'}
+
+
+    def get_all_contracts(self)-> List[Dict]:
+        dao = ContractDAO()
+        all_contracts = dao.get_all_contracts()
+        res = {"contracts": [contract.__dict__ for contract in all_contracts]}
+        return res
+
     def get_all_contracts_by_id_team(self,id_team)-> List[Dict]:
         dao = ContractDAO()
         all_contracts = dao.get_all_contracts_by_id_team(id_team)
@@ -79,3 +95,14 @@ class ContractService():
     
     def is_valide(self, contract : ContractDB) -> bool :
         pass
+
+
+
+    def stop_contract_by_id(self, id: int) -> Dict:
+        dao = ContractDAO()
+        existing_contract = dao.get_contract_by_id(id)
+        if existing_contract:
+            dao.stop_contract(existing_contract)
+            return {"message": f"The contract with id {id} has been stoped"}
+        else:
+            return {"message": f"The player with id {id} does not exist"}   
