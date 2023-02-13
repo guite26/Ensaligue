@@ -1,6 +1,7 @@
 from database.database import LeagueDB, engine, session
 from sqlalchemy.orm import Query
 from typing import List
+from business_objects.league import LeagueModel
 
 class LeagueDAO():
     def __init__(self):
@@ -18,8 +19,16 @@ class LeagueDAO():
     def get_league_by_id(self,id:int) -> LeagueDB:
         # add it to the session and commit it
         leaguedb = session.get(entity=LeagueDB,ident=id)
-        session.commit()
+
         return leaguedb
+
+    def get_new_id_league_after_promotion(self,league_currently : LeagueDB) -> int:
+        league = session.query(LeagueDB).filter_by(country = league_currently.country, level = league_currently.level -1 ).first()
+        return league.id_league
+
+    def get_new_id_league_after_relegation(self,league_currently : LeagueDB) -> int:
+        league = session.query(LeagueDB).filter_by(country = league_currently.country, level = league_currently.level +1 ).first()
+        return league.id_league
 
     def get_all_leagues(self) -> List[LeagueDB] :
         # add it to the session and commit it
@@ -27,13 +36,23 @@ class LeagueDAO():
         return all_leagues
 
 
-    def delete_league_by_id(self,id:int):
-        league = session.query(LeagueDB).filter_by(id_league=id).first()
+    def delete_league_by_id(self,id_league:int):
+        league = session.query(LeagueDB).filter_by(id_league=id_league).first()
         session.delete(league)
         session.commit()
 
-    def put_league_by_id(self,id:int, league:LeagueDB):
-        old_league = session.query(LeagueDB).filter_by(id_league=id).first()
-        old_league.name = league.name
-        old_league.country = league.country
+
+
+    def put_league_by_id(self, existing_league : LeagueDB, new_league : LeagueModel) -> LeagueDB:
+        existing_league.name = new_league.name
+        existing_league.country = new_league.country
+        existing_league.level = new_league.level
+        existing_league.professional_minimum_wage = new_league.professional_minimum_wage
+        existing_league.daily_salary_first_year = new_league.internSalaryGrid[0]
+        existing_league.daily_salary_second_year = new_league.internSalaryGrid[1]
+        existing_league.daily_salary_third_year = new_league.internSalaryGrid[2]
         session.commit()
+        return existing_league
+    
+
+

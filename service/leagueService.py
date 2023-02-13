@@ -61,6 +61,14 @@ class LeagueService():
     
             
 
+    def put_league_by_id(self, id: int, league: LeagueModel) -> Dict:
+        dao = LeagueDAO()
+        existing_league = dao.get_league_by_id(id)
+
+        if existing_league:
+            dao.put_league_by_id(existing_league,league)
+            return {"message": f"The league with id {id} has been updated"}
+        else:
+            return {"message": f"The league with id {id} does not exist"}  
 
 
-    

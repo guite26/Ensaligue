@@ -68,13 +68,4 @@ class PlayerService():
             dao.put_player_by_id(existing_player,player)
             return {"message": f"The player with id {id} has been updated"}
         else:
-            return {"message": f"The player with id {id} does not exist"}
-
-
-
-    
-           
-
-
-
-    
+            return {"message": f"The player with id {id} does not exist"}    

@@ -107,6 +107,19 @@ def put_team_by_id(id: int, team: TeamModel):
     res = teamService.put_team_by_id(id, team)
     return res
 
+@app.put("/team/{id}/promotion", status_code=status.HTTP_200_OK, tags=["team"])
+def update_team_league_after_promotion(id : int) :
+    teamService = TeamService()
+    res = teamService.update_team_league_after_promotion(id)
+    return res
+
+@app.put("/team/{id}/relegation", status_code=status.HTTP_200_OK, tags=["team"])
+def update_team_league_after_relegation(id : int) :
+    teamService = TeamService()
+    res = teamService.update_team_league_after_relegation(id)
+    return res
+
+
 
 ############################### LEAGUE ########################################
 
@@ -146,9 +159,10 @@ def put_league_by_id(id: int, league: LeagueModel):
     res = teamService.put_team_by_id(id, teamService)
     return res
 
+
 ############################### CONTRACT ########################################
 
 @app.post("/contract", status_code=status.HTTP_201_CREATED,tags=['contract'])
-def add_team(contract: ContractModel):
+def add_cotract(contract: ContractModel):
     contractService = ContractService()
     res = contractService.add_contract(contract)
