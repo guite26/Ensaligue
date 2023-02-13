@@ -1,4 +1,6 @@
 from dao.teamDAO import TeamDAO
+from dao.leagueDAO import LeagueDAO
+
 from business_objects.team import Team, TeamModel
 from database.database import TeamDB
 from datetime import date
@@ -62,14 +64,47 @@ class TeamService():
         else:
             return {"message": f"The team with id {id} does not exist"}
 
-
     def put_team_by_id(self, id: int, team: TeamModel) -> Dict:
         dao = TeamDAO()
         existing_team = dao.get_team_by_id(id)
         if existing_team:
-            existing_team.name = team.name
-            existing_team.id_league = team.id_league
-            dao.put_team_by_id(team.id_league,existing_team)
+            if not self.is_valid_id_league(team.id_league):
+                return {"message": f"{team.id_league} is not a valid id_league"}
+            dao.put_team_by_id(existing_team,team)
             return {"message": f"The team with id {id} has been updated"}
         else:
             return {"message": f"The team with id {id} does not exist"}
+
+    
+    def update_team_league_after_promotion(self, id_team : int) -> Dict:
+        dao = TeamDAO()
+        team = dao.get_team_by_id(id_team)
+        league = LeagueDAO().get_league_by_id(team.id_league)
+        if team :
+            if league.level !=1 :
+                try : 
+                    dao.update_team_league_after_promotion(team,league)
+                    return {"message": f"The team with id {id_team} has been promoted to level {league.level -1}"}
+                except : 
+                    return{"message": f"The league in country {league.country} whith level {league.level - 1 } does not exist"}
+            else :
+                return{"message": f"The team with id {id_team} cannot be promoted"}
+        else :
+            return {"message": f"The team with id {id_team} does not exist"}
+
+
+    def update_team_league_after_relegation(self,id_team : int) -> Dict :
+        dao = TeamDAO()
+        team = dao.get_team_by_id(id_team)
+        league = LeagueDAO().get_league_by_id(team.id_league)
+        if team :
+            try : 
+                dao.update_team_league_after_relegation(team,league)
+                return {"message": f"The team with id {id_team} has been relegated to level {league.level +1}"}
+            except :
+                return{"message": f"The league in country {league.country} whith level {league.level + 1 } does not exist"}
+
+        else :
+            return {"message": f"The team with id {id_team} does not exist"}
+
+    

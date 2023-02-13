@@ -1,6 +1,8 @@
-from database.database import TeamDB, engine, session
+from database.database import TeamDB, engine, session, LeagueDB
 from sqlalchemy.orm import Query
 from typing import List
+from business_objects.team import TeamModel
+from dao.leagueDAO import LeagueDAO
 
 class TeamDAO():
     def __init__(self):
@@ -46,3 +48,21 @@ class TeamDAO():
             team_to_update.update(team.__dict__)
             session.commit()
         return team_to_update
+
+    def put_team_by_id(self, existing_team : TeamDB, new_team : TeamModel) -> TeamDB:
+        existing_team.name = new_team.name
+        existing_team.id_league = new_team.id_league
+        session.commit()
+        return existing_team
+    
+
+    def update_team_league_after_promotion(self,existing_team : TeamDB,curently_league : LeagueDB) -> TeamDB :
+        existing_team.id_league = LeagueDAO().get_new_id_league_after_promotion(curently_league)
+        session.commit()
+        return existing_team
+    
+    def update_team_league_after_relegation(self,existing_team : TeamDB,curently_league : LeagueDB) -> TeamDB :
+        existing_team.id_league = LeagueDAO().get_new_id_league_after_promotion(curently_league)
+        session.commit()
+        return existing_team
+

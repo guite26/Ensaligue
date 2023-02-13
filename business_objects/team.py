@@ -9,4 +9,4 @@ class Team :
     def __init__(self,name : str,league : league_bo.League) -> None:
         self.name = name
         self.league = league
-    
+   
