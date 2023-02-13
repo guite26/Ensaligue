@@ -2,12 +2,12 @@ from abc import ABC, abstractmethod
 from business_objects.player import Player
 from business_objects.league import League
 from datetime import date
-from typing import Optional
+from typing import Optional, List
 
 class AbstractComputationStrategy(ABC):
 
     @abstractmethod
-    def compute_duration(self,player:Player,date_start:Optional[date] = None,duration:Optional[int] = None):
+    def compute_duration(self,player_birth_date:date,date_start:Optional[date] = None,duration:Optional[int] = None):
         return
 
     @abstractmethod
@@ -15,7 +15,7 @@ class AbstractComputationStrategy(ABC):
         return 
 
     @abstractmethod
-    def compute_salary(self, league: League,date_start:date, date_end:date, salary:Optional[int]=None):
+    def compute_salary(self, league_internal_salary_grid: List[float],date_start:date, date_end:date, salary:Optional[int]=None):
         return 
 
 

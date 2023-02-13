@@ -1,5 +1,6 @@
 from pydantic.main import BaseModel
 from typing import List, Union
+from business_objects.league_subscriber import LeagueSubscriber
 
 class LeagueModel(BaseModel) : 
     name : str
@@ -16,7 +17,7 @@ class League():
         self.level = level
         self.professional_minimum_wage = professional_minimum_wage
         self.internSalaryGrid = internSalaryGrid
-        self._subscribers : List = []
+        self._subscribers : List[LeagueSubscribers] = []
     
     @property
     def subscribers(self):
@@ -30,4 +31,4 @@ class League():
         if not self._subscribers:
             return 
         for s in self._subscribers:
-            s.update_league(self)
+            s.update(self)

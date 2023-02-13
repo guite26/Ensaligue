@@ -7,7 +7,7 @@ from typing import Union, Literal
 
 from business_objects.player import Player
 import business_objects.team as team_bo
-
+from business_objects.league_subscriber import LeagueSubscribers
 
 
 from service.abstract_computation_strategy import AbstractComputationStrategy
@@ -38,13 +38,13 @@ class Contract() :
         self._computation_strategy = computation_strategy
     
     def compute_duration(self):
-        self.duration = self._computation_strategy.compute_duration(self.player,self.date_start,self.duration)
+        self.duration = self._computation_strategy.compute_duration(self.player.birth_date,self.date_start,self.duration)
 
     def compute_end_date(self):
         self.date_end = self._computation_strategy.compute_end_date(self.date_start,self.duration)
 
     def compute_salary(self):
-        self.salary = self._computation_strategy.compute_salary(self.team.league,self.date_start,self.duration,self.salary)
+        self.salary = self._computation_strategy.compute_salary(self.team.league.internSalaryGrid,self.date_start,self.duration,self.salary)
     
-    def update_league(self,new_league):
-        self.salary = self.compute_salary(new_league,self.date_start,self.duration,self.salary)
+    def update_league(self,new_internSalaryGrid):
+        self.salary = self.compute_salary(new_internSalaryGrid,self.date_start,self.duration,self.salary)
