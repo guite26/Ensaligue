@@ -13,8 +13,8 @@ from business_objects.league import League
 from service.computation_intern_strategy import ComputationInternStrategy
 from service.computation_pro_strategy import ComputationProStrategy
 from service.teamService import TeamService
-
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 class ContractService():
 
@@ -23,6 +23,7 @@ class ContractService():
 
     
     def add_contract(self,contract:ContractModel):
+
         player_db = PlayerDAO().get_player_by_id(contract.id_player)
         if not player_db:
             return {"message": f"The player id {contract.id_player} does not exist"}
@@ -40,13 +41,28 @@ class ContractService():
         contract_class = Contract(player=player,team=team,date_start=contract.date_start,duration=contract.duration,salary=contract.salary)
 
         if contract.type_contract == "professional":
+            if player.birth_date > (datetime.now() + relativedelta(years=-16)).date() :
+                return{"message":f'The player is too young to sign a professional contract'}
+
             contract_class.computation_strategy = ComputationProStrategy()
+            contract_class.compute_duration()
+            if contract_class.duration <1 :
+                 return {"message":f'The contract period must be at least 1 year'} 
+            contract_class.compute_salary()
+            if contract_class.salary < league.professional_minimum_wage :
+                return {"message":f'The wage offered is below the minimum wage'} 
+
         elif contract.type_contract == "intern":
-            contract_class.computation_strategy = ComputationInternStrategy()
-        
-        contract_class.compute_duration()
+            contract_class.computation_strategy = ComputationInternStrategy()            
+            contract_class.compute_duration()
+            contract_class.compute_salary()
+            if contract_class.duration <=0 :
+                return{"message":f'The player is too old to sign a internship contract'}
+            elif contract_class.duration >=4 :
+                return{"message":f'The player is too young to sign a internship contract'}
+
+
         contract_class.compute_end_date()
-        contract_class.compute_salary()
 
         contract_db = ContractDB(id_player=contract.id_player,id_team=contract.id_team,
         date_start=contract.date_start,date_end=contract_class.date_end,

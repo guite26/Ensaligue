@@ -11,13 +11,13 @@ class ComputationInternStrategy(AbstractComputationStrategy):
    
     def compute_duration(self,player_birth_date: date, date_start: Optional[date] = None, duration: Optional[int] = None):
         duration = (player_birth_date.year+20) - date_start.year if (date(date_start.year,6,30)<date_start) else player_birth_date.year +20 -date_start.year +1
-        if duration <= 0 :
+        """         if duration <= 0 :
             raise ValueError("Le joueuer est trop agé pour signer un contrat stagiaire")
         elif duration >=4 :
             raise ValueError("Le joueuer est trop jeune pour signer un contrat stagiaire")
-        else :
-            return duration
-            
+        else : """
+        return duration
+           
     def compute_end_date(self, date_start:date,duration:int):
         if duration<1 :
             raise ValueError("Le temps de contrat doit être de minimum 1 an.")
