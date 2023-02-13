@@ -55,12 +55,7 @@ class TeamService():
         res = {"teams": [team.as_dict() for team in all_teams]}
         return res
     
-    def get_all_contract_by_id_league(self,id_league)-> List[Dict]:
-        list_team_in_league = self.get_all_teams_by_id_league(id_league)
-        dao = ContractDAO()
-        all_teams = dao.get_all_teams_by_id_league(id_league)
-        res = {"teams": [team.as_dict() for team in all_teams]}
-        return res
+
     
 
     def delete_team_by_id(self, id: int) -> Dict:

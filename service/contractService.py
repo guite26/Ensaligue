@@ -58,11 +58,11 @@ class ContractService():
     def get_all_contracts_by_id_team(self,id_team)-> List[Dict]:
         dao = ContractDAO()
         all_contracts = dao.get_all_contracts_by_id_team(id_team)
-        res = {"contracts": [contract.as_dict() for contract in all_contracts]}
+        res = {"contracts": [contract.__dict__ for contract in all_contracts]}
         return res
 
 
-    def get_all_contract_by_id_league(self,id_league)-> List[Dict]:
+    def get_all_contracts_by_id_league(self,id_league : int)-> List[Dict]:
         list_teams_in_league = TeamDAO().get_all_teams_by_id_league(id_league)
         dao = ContractDAO()
         list_contracts = []
@@ -70,7 +70,7 @@ class ContractService():
         for team in list_teams_in_league :
             list_contracts.append(dao.get_all_contracts_by_id_team(team.id_team))
 
-        res = {"contracts": [contract.as_dict() for contract in list_contracts]}
+        res = {"contracts": [contract.__dict__ for l in list_contracts for contract in l]}
 
         return res
 

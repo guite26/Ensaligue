@@ -7,7 +7,7 @@ from typing import Union, Literal
 
 from business_objects.player import Player
 import business_objects.team as team_bo
-from business_objects.league_subscriber import LeagueSubscribers
+from business_objects.league_subscriber import LeagueSubscriber
 
 
 from service.abstract_computation_strategy import AbstractComputationStrategy

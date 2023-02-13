@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from business_objects.player import Player
 from business_objects.league import LeagueModel
 from business_objects.team import Team, TeamModel
-from business_objects.contract import Contract, ContractModel
+from business_objects.contract import ContractModel
 
 from service.playerService import PlayerService
 from service.teamService import TeamService
@@ -90,11 +90,13 @@ def get_team_by_id(id:int):
     return res
 
 
-@app.get("team/{id}/contacts",status_code=status.HTTP_201_CREATED,tags=['team'])
+@app.get("/team/{id}/contracts",status_code=status.HTTP_201_CREATED,tags=['team'])
 def get_all_contacts_by_id_team(id : int):
+    
     contactService = ContractService()
-    res = contactService.get_all_contacts_by_id_team(id)
+    res = contactService.get_all_contracts_by_id_team(id)
     return res
+
 
 
 @app.delete("/team/{id}", status_code=status.HTTP_204_NO_CONTENT, tags=["team"])
@@ -181,3 +183,4 @@ def put_league_by_id(id: int, league: LeagueModel):
 def add_cotract(contract: ContractModel):
     contractService = ContractService()
     res = contractService.add_contract(contract)
+    return res
