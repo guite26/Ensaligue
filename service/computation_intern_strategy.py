@@ -8,7 +8,7 @@ class ComputationInternStrategy(AbstractComputationStrategy):
 
     def __init__(self) -> None:
         super().__init__()
-    
+   
     def compute_duration(self,player_birth_date: date, date_start: Optional[date] = None, duration: Optional[int] = None):
         duration = (player_birth_date.year+20) - date_start.year if (date(date_start.year,6,30)<date_start) else player_birth_date.year +20 -date_start.year +1
         if duration <= 0 :

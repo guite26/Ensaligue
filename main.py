@@ -90,6 +90,13 @@ def get_team_by_id(id:int):
     return res
 
 
+@app.get("team/{id}/contacts",status_code=status.HTTP_201_CREATED,tags=['team'])
+def get_all_contacts_by_id_team(id : int):
+    contactService = ContractService()
+    res = contactService.get_all_contacts_by_id_team(id)
+    return res
+
+
 @app.delete("/team/{id}", status_code=status.HTTP_204_NO_CONTENT, tags=["team"])
 def delete_team_by_id(id: int):
     teamService = TeamService()
@@ -118,6 +125,7 @@ def update_team_league_after_relegation(id : int) :
     teamService = TeamService()
     res = teamService.update_team_league_after_relegation(id)
     return res
+
 
 
 
@@ -153,10 +161,17 @@ def get_all_teams_by_id_league(id_league : int) :
     res = teamService.get_all_teams_by_id_league(id_league)
     return res
 
+@app.get("/league/{id_league}/contracts",status_code=status.HTTP_201_CREATED,tags=['league'])
+def get_all_contract_by_id_league(id_league : int) :
+    contractService = ContractService()
+    res = contractService.get_all_contracts_by_id_league(id_league)
+    return res
+
+
 @app.put("/league/{id}", status_code=status.HTTP_200_OK, tags=["league"])
 def put_league_by_id(id: int, league: LeagueModel):
-    teamService = LeagueService()
-    res = teamService.put_team_by_id(id, teamService)
+    leagueService = LeagueService()
+    res = leagueService.put_league_by_id(id, league)
     return res
 
 

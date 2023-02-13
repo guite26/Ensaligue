@@ -3,6 +3,7 @@ from dao.leagueDAO import LeagueDAO
 from dao.teamDAO import TeamDAO
 from dao.contractDAO import ContractDAO
 from database.database import ContractDB, PlayerDB, TeamDB, LeagueDB
+from typing import List, Dict
 
 from business_objects.contract import Contract, ContractModel
 from business_objects.player import Player
@@ -11,6 +12,10 @@ from business_objects.league import League
 
 from service.computation_intern_strategy import ComputationInternStrategy
 from service.computation_pro_strategy import ComputationProStrategy
+from service.teamService import TeamService
+
+from datetime import datetime
+
 class ContractService():
 
     def __init__(self) -> None:
@@ -49,3 +54,28 @@ class ContractService():
 
         id = ContractDAO().add_contract(contract_db)
         return f"created contract with id {id}"
+    
+    def get_all_contracts_by_id_team(self,id_team)-> List[Dict]:
+        dao = ContractDAO()
+        all_contracts = dao.get_all_contracts_by_id_team(id_team)
+        res = {"contracts": [contract.as_dict() for contract in all_contracts]}
+        return res
+
+
+    def get_all_contract_by_id_league(self,id_league)-> List[Dict]:
+        list_teams_in_league = TeamDAO().get_all_teams_by_id_league(id_league)
+        dao = ContractDAO()
+        list_contracts = []
+
+        for team in list_teams_in_league :
+            list_contracts.append(dao.get_all_contracts_by_id_team(team.id_team))
+
+        res = {"contracts": [contract.as_dict() for contract in list_contracts]}
+
+        return res
+
+    def in_progress(self,contract : ContractDB) -> bool :
+        return contract.date_end > datetime.now()
+    
+    def is_valide(self, contract : ContractDB) -> bool :
+        pass
