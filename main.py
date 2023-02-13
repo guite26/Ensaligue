@@ -4,14 +4,14 @@ from database.database import Base, engine
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from business_objects.player import Player
-from business_objects.league import League
+from business_objects.league import LeagueModel
 from business_objects.team import Team, TeamModel
 from business_objects.contract import Contract, ContractModel
 
 from service.playerService import PlayerService
 from service.teamService import TeamService
 from service.leagueService import LeagueService
-
+from service.contractService import ContractService
 #from service.leagueService import LeagueService
 
 
@@ -112,7 +112,7 @@ def put_team_by_id(id: int, team: TeamModel):
 
 
 @app.post("/league", status_code=status.HTTP_201_CREATED,tags=['league'])
-def add_league(league: League):
+def add_league(league: LeagueModel):
     leagueService = LeagueService()
     res = leagueService.add_league(league)
     return res
@@ -139,3 +139,16 @@ def get_all_teams_by_id_league(id_league : int) :
     teamService = TeamService()
     res = teamService.get_all_teams_by_id_league(id_league)
     return res
+
+@app.put("/league/{id}", status_code=status.HTTP_200_OK, tags=["league"])
+def put_league_by_id(id: int, league: LeagueModel):
+    teamService = LeagueService()
+    res = teamService.put_team_by_id(id, teamService)
+    return res
+
+############################### CONTRACT ########################################
+
+@app.post("/contract", status_code=status.HTTP_201_CREATED,tags=['contract'])
+def add_team(contract: ContractModel):
+    contractService = ContractService()
+    res = contractService.add_contract(contract)

@@ -1,12 +1,14 @@
 from pydantic.main import BaseModel
-from business_objects.team import Team
+from datetime import date, datetime
+from abc import ABC, abstractmethod
+
 from datetime import date
 from typing import Union, Literal
 
 from business_objects.player import Player
-from business_objects.team import Team
-from datetime import date, datetime
-from abc import ABC, abstractmethod
+import business_objects.team as team_bo
+
+
 
 from service.abstract_computation_strategy import AbstractComputationStrategy
 
@@ -19,7 +21,7 @@ class ContractModel(BaseModel):
     type_contract : Literal['professional','intern']
    
 class Contract() :
-    def __init__(self,player : Player,team : Team,date_start : date,duration:int=None,salary:int=None) -> None:
+    def __init__(self,player : Player,team : team_bo.Team,date_start : date,duration:int=None,salary:int=None) -> None:
         self.player = player
         self.team = team
         self.date_start = date_start
@@ -44,3 +46,5 @@ class Contract() :
     def compute_salary(self):
         self.salary = self._computation_strategy.compute_salary(self.team.league,self.date_start,self.duration,self.salary)
     
+    def update_league(self,new_league):
+        self.salary = self.compute_salary(new_league,self.date_start,self.duration,self.salary)

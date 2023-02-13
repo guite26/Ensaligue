@@ -1,7 +1,8 @@
 from database.database import PlayerDB, engine, session
 from sqlalchemy.orm import Query
 from typing import List
-
+from business_objects.player import Player
+from dao.utils_dao import updateobj
 class PlayerDAO():
     def __init__(self):
         pass
@@ -34,12 +35,13 @@ class PlayerDAO():
         else:
             raise Exception("Player with id {} not found.".format(id))
    
-    def put_player_by_id(self, id: int, player: PlayerDB) -> PlayerDB:
-        player_to_update = session.query(PlayerDB).get(id)
-        if player_to_update:
-            player_to_update.update(player.__dict__)
-            session.commit()
-        return player_to_update
+    def put_player_by_id(self, existing_player : PlayerDB, new_player : Player) -> PlayerDB:
+        existing_player.name = new_player.name
+        existing_player.surname = new_player.surname
+        existing_player.birth_date = new_player.birth_date
+        existing_player.position = new_player.position
+        session.commit()
+        return existing_player
     
 
 

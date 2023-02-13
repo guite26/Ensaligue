@@ -1,5 +1,5 @@
 from dao.leagueDAO import LeagueDAO
-from business_objects.league import League
+from business_objects.league import League, LeagueModel
 from database.database import LeagueDB
 from datetime import date
 from typing import List, Dict
@@ -22,7 +22,7 @@ class LeagueService():
 
 
 
-    def add_league(self,league:League) -> str : 
+    def add_league(self,league:LeagueModel) -> str : 
         if not self.is_valid_intern_salary_grid(league.internSalaryGrid):
             return f"{league.internSalaryGrid} is not a valid internSalaryGrid"
 
@@ -47,7 +47,17 @@ class LeagueService():
         else :
             return {"message":f'The league with id {id} does not exist'}
 
-
+    def put_league_by_id(self, id: int, league: LeagueModel) -> Dict:
+        if not self.is_valid_intern_salary_grid(league.internSalaryGrid):
+            return f"{league.internSalaryGrid} is not a valid internSalaryGrid"
+        dao = LeagueDAO()
+        existing_league = dao.get_league_by_id(id)
+        if existing_league:
+            existing_league.name = league.name
+            existing_league.id_league = league.id_league
+            return {"message": f"The league with id {id} has been updated"}
+        else:
+            return {"message": f"The league with id {id} does not exist"}
     
             
 

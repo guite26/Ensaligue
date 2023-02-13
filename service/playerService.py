@@ -65,10 +65,7 @@ class PlayerService():
         if existing_player:
             if not self.is_valid_birthdate(player.birth_date):
                 return {"message": f"{player.birth_date} is not a valid birthdate"}
-            existing_player.name = player.name
-            existing_player.surname = player.surname
-            existing_player.birth_date = player.birth_date
-            existing_player.position = player.position
+            dao.put_player_by_id(existing_player,player)
             return {"message": f"The player with id {id} has been updated"}
         else:
             return {"message": f"The player with id {id} does not exist"}

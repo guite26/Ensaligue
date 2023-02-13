@@ -63,12 +63,13 @@ class TeamService():
             return {"message": f"The team with id {id} does not exist"}
 
 
-    def put_team_by_id(self, id: int, team: Team) -> Dict:
+    def put_team_by_id(self, id: int, team: TeamModel) -> Dict:
         dao = TeamDAO()
         existing_team = dao.get_team_by_id(id)
         if existing_team:
             existing_team.name = team.name
             existing_team.id_league = team.id_league
+            dao.put_team_by_id(team.id_league,existing_team)
             return {"message": f"The team with id {id} has been updated"}
         else:
             return {"message": f"The team with id {id} does not exist"}

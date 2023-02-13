@@ -15,13 +15,13 @@ class ContractDAO():
         # close the session
         return id
 
-    """ def get_contract_by_id(self,id:int) -> ContractDB:
+    def get_contract_by_id(self,id:int) -> ContractDB:
         # add it to the session and commit it
-        contractdb = session.get(entity=contractDB,ident=id)
+        contractdb = session.get(entity=ContractDB,ident=id)
         session.commit()
         return contractdb
 
     def get_all_contracts(self) -> List[ContractDB] :
         # add it to the session and commit it
-        all_contracts = session.query(contractDB).all()
-        return all_contracts """
+        all_contracts = session.query(ContractDB).all()
+        return all_contracts

@@ -43,7 +43,7 @@ class TeamDB(Base):
     __tablename__ = 'team'
     id_team = Column(Integer, Sequence("team_id_seq"), primary_key=True,nullable=False)
     name = Column(String(256),nullable=False)
-    id_league = Column(String(256),ForeignKey("league.id_league"),nullable=False)
+    id_league = Column(Integer,ForeignKey("league.id_league"),nullable=False)
 
     def as_dict(self) -> Dict:
         dict_repr = {
@@ -82,7 +82,7 @@ class LeagueDB(Base):
 class ContractDB(Base):
     __tablename__ = 'contract'
     id_contract = Column(Integer, Sequence("contract_id_seq"), primary_key=True,nullable=False)
-    id_player = Column(String(256),ForeignKey("player.id_player"),nullable=False)
+    id_player = Column(Integer,ForeignKey("player.id_player"),nullable=False)
     id_team = Column(Integer,ForeignKey("team.id_team"),nullable=False)
     date_start = Column(Date,nullable=False)
     date_end = Column(Date,nullable=False)
