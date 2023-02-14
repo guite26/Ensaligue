@@ -44,7 +44,7 @@ class Contract() :
         self.date_end = self._computation_strategy.compute_end_date(self.date_start,self.duration)
 
     def compute_salary(self):
-        self.salary = self._computation_strategy.compute_salary(self.team.league.internSalaryGrid,self.date_start,self.duration,self.salary)
+        self.salary = self._computation_strategy.compute_salary(self.team.league.professional_minimum_wage,self.team.league.internSalaryGrid,self.date_start,self.duration,self.salary)
     
-    def update(self,new_internSalaryGrid):
-        self.salary = self.compute_salary(new_internSalaryGrid,self.date_start,self.duration,self.salary)
+    def update(self,new_professional_minimum_wage,new_internSalaryGrid):
+        self.salary = self.compute_salary(new_professional_minimum_wage,new_internSalaryGrid,self.date_start,self.duration,self.salary)

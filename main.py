@@ -12,7 +12,6 @@ from service.playerService import PlayerService
 from service.teamService import TeamService
 from service.leagueService import LeagueService
 from service.contractService import ContractService
-#from service.leagueService import LeagueService
 
 
 router = APIRouter()
