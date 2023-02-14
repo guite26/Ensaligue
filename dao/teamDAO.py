@@ -62,7 +62,7 @@ class TeamDAO():
         return existing_team
     
     def update_team_league_after_relegation(self,existing_team : TeamDB,curently_league : LeagueDB) -> TeamDB :
-        existing_team.id_league = LeagueDAO().get_new_id_league_after_promotion(curently_league)
+        existing_team.id_league = LeagueDAO().get_new_id_league_after_relegation(curently_league)
         session.commit()
         return existing_team
 
