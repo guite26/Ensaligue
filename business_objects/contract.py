@@ -7,7 +7,7 @@ from typing import Union, Literal
 
 from business_objects.player import Player
 import business_objects.team as team_bo
-from business_objects.league_subscriber import LeagueSubscribers
+from business_objects.league_subscriber import LeagueSubscriber
 
 
 from service.abstract_computation_strategy import AbstractComputationStrategy
@@ -46,5 +46,5 @@ class Contract() :
     def compute_salary(self):
         self.salary = self._computation_strategy.compute_salary(self.team.league.internSalaryGrid,self.date_start,self.duration,self.salary)
     
-    def update_league(self,new_internSalaryGrid):
+    def update(self,new_internSalaryGrid):
         self.salary = self.compute_salary(new_internSalaryGrid,self.date_start,self.duration,self.salary)

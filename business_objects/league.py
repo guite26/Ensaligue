@@ -17,7 +17,7 @@ class League():
         self.level = level
         self.professional_minimum_wage = professional_minimum_wage
         self.internSalaryGrid = internSalaryGrid
-        self._subscribers : List[LeagueSubscribers] = []
+        self._subscribers : List[LeagueSubscriber] = []
     
     @property
     def subscribers(self):
