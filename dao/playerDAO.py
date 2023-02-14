@@ -7,7 +7,7 @@ class PlayerDAO():
     def __init__(self):
         pass
 
-    def add_player(self,player:PlayerDB):
+    def add_player(self, player:PlayerDB):
         # add it to the session and commit it
         session.add(player)
         session.commit()
@@ -34,7 +34,7 @@ class PlayerDAO():
             session.commit()
         else:
             raise Exception("Player with id {} not found.".format(id))
-   
+  
     def put_player_by_id(self, existing_player : PlayerDB, new_player : Player) -> PlayerDB:
         existing_player.name = new_player.name
         existing_player.surname = new_player.surname

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from business_objects.player import Player
 from business_objects.league import LeagueModel
 from business_objects.team import Team, TeamModel
-from business_objects.contract import Contract, ContractModel
+from business_objects.contract import ContractModel
 
 from service.playerService import PlayerService
 from service.teamService import TeamService
@@ -90,6 +90,15 @@ def get_team_by_id(id:int):
     return res
 
 
+@app.get("/team/{id}/contracts",status_code=status.HTTP_201_CREATED,tags=['team'])
+def get_all_contacts_by_id_team(id : int):
+    
+    contactService = ContractService()
+    res = contactService.get_all_contracts_by_id_team(id)
+    return res
+
+
+
 @app.delete("/team/{id}", status_code=status.HTTP_204_NO_CONTENT, tags=["team"])
 def delete_team_by_id(id: int):
     teamService = TeamService()
@@ -118,6 +127,7 @@ def update_team_league_after_relegation(id : int) :
     teamService = TeamService()
     res = teamService.update_team_league_after_relegation(id)
     return res
+
 
 
 
@@ -153,10 +163,17 @@ def get_all_teams_by_id_league(id_league : int) :
     res = teamService.get_all_teams_by_id_league(id_league)
     return res
 
+@app.get("/league/{id_league}/contracts",status_code=status.HTTP_201_CREATED,tags=['league'])
+def get_all_contract_by_id_league(id_league : int) :
+    contractService = ContractService()
+    res = contractService.get_all_contracts_by_id_league(id_league)
+    return res
+
+
 @app.put("/league/{id}", status_code=status.HTTP_200_OK, tags=["league"])
 def put_league_by_id(id: int, league: LeagueModel):
-    teamService = LeagueService()
-    res = teamService.put_team_by_id(id, teamService)
+    leagueService = LeagueService()
+    res = leagueService.put_league_by_id(id, league)
     return res
 
 
@@ -166,3 +183,22 @@ def put_league_by_id(id: int, league: LeagueModel):
 def add_cotract(contract: ContractModel):
     contractService = ContractService()
     res = contractService.add_contract(contract)
+    return res
+
+@app.get("/contract/{id}", status_code=status.HTTP_201_CREATED,tags=['contract'])
+def get_contract_by_id(id:int):
+    contractService = ContractService()
+    res = contractService.get_contract_by_id(id)
+    return res
+
+@app.get("/contract/", status_code=status.HTTP_201_CREATED,tags=['contract'])
+def get_all_contracts():
+    contractService = ContractService()
+    res = contractService.get_all_contracts()
+    return res
+
+@app.put("/contract/{id_contract}/stop",status_code=status.HTTP_201_CREATED,tags=['contract'])
+def stop_contract_by_id(id_contract :int) :
+    contractService = ContractService()
+    res = contractService.stop_contract_by_id(id_contract)
+    return res

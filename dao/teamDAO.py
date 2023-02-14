@@ -29,7 +29,7 @@ class TeamDAO():
         return all_teams
     
     def get_all_teams_by_id_league(self, id_league: int) -> List[TeamDB]:
-        teamdb = session.query(TeamDB).filter_by(TeamDB.id_league == id_league).all()
+        teamdb = session.query(TeamDB).filter_by(id_league = id_league).all()
         return teamdb
 
 
