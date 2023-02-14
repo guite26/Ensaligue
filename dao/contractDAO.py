@@ -33,6 +33,11 @@ class ContractDAO():
         existing_contract.date_end = datetime.now()
         session.commit()
         return existing_contract
+    
+    def update_contract(self,contract : ContractDB,new_salary:int) :
+        contract.total_salary = new_salary
+        session.commit()
+        return contract
 
     
 

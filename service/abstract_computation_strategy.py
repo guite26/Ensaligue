@@ -15,7 +15,11 @@ class AbstractComputationStrategy(ABC):
         return 
 
     @abstractmethod
-    def compute_salary(self, league_internal_salary_grid: List[float],date_start:date, date_end:date, salary:Optional[int]=None):
+    def compute_salary(self,min_salary:int,league_internal_salary_grid: List[float],date_start:date, date_end:date, salary:Optional[int]=None):
         return 
+    
 
+    @abstractmethod
+    def update_salary(self,new_min_salary:int, new_league_internal_salary_grid: List[float],date_start:date, date_end : date,salary:int,internal_salary_grid : List[float]):
+        return
 

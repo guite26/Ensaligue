@@ -1,5 +1,10 @@
 from dao.leagueDAO import LeagueDAO
+from dao.contractDAO import ContractDAO
+from service.contractService import ContractService
+from service.computation_intern_strategy import ComputationInternStrategy
+from service.computation_pro_strategy import ComputationProStrategy
 from business_objects.league import League, LeagueModel
+from business_objects.contract import Contract
 from database.database import LeagueDB
 from datetime import date
 from typing import List, Dict
@@ -46,27 +51,29 @@ class LeagueService():
             return leagueDB.as_dict()
         else :
             return {"message":f'The league with id {id} does not exist'}
-
-    def put_league_by_id(self, id: int, league: LeagueModel) -> Dict:
-        if not self.is_valid_intern_salary_grid(league.internSalaryGrid):
-            return f"{league.internSalaryGrid} is not a valid internSalaryGrid"
-        dao = LeagueDAO()
-        existing_league = dao.get_league_by_id(id)
-        if existing_league:
-            existing_league.name = league.name
-            existing_league.id_league = league.id_league
-            return {"message": f"The league with id {id} has been updated"}
-        else:
-            return {"message": f"The league with id {id} does not exist"}
     
             
 
     def put_league_by_id(self, id: int, league: LeagueModel) -> Dict:
         dao = LeagueDAO()
         existing_league = dao.get_league_by_id(id)
-
         if existing_league:
-            dao.put_league_by_id(existing_league,league)
+            league_class = League(existing_league.name,existing_league.country,existing_league.level,
+            existing_league.professional_minimum_wage,[existing_league.daily_salary_first_year,existing_league.daily_salary_second_year,existing_league.daily_salary_third_year]
+            )
+            all_contracts_dict = ContractService().get_all_contracts_by_id_league(id)
+
+            for c in all_contracts_dict["contracts"]:
+                contract = Contract(salary=c["total_salary"],date_start=c["date_start"], date_end= c["date_end"])
+                contract.league = league_class
+                if c["type_contract"] == "professional":
+                    contract.computation_strategy = ComputationProStrategy()
+                    contract.update(league.professional_minimum_wage,league.internSalaryGrid)
+                else : 
+                    contract.computation_strategy = ComputationInternStrategy()
+                    contract.update(league.professional_minimum_wage,league.internSalaryGrid)
+
+            
             return {"message": f"The league with id {id} has been updated"}
         else:
             return {"message": f"The league with id {id} does not exist"}  
