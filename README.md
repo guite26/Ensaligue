@@ -1,9 +1,7 @@
 
-# Project Title
+# ENSALIGUE
 
-ENSALIGUE
-
-# description
+# Description
 
 It is an application that provides an API to manage a football system. The API allows to manage players, teams, leagues and contracts.
 
