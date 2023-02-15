@@ -16,15 +16,16 @@ from service.contractService import ContractService
 
 router = APIRouter()
 
-# Create the database
-Base.metadata.create_all(engine)
-
 # Initialize app
 app = FastAPI()
-# <irrelevant code here..>
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@app.on_event("startup")
+def startup():
+    Base.metadata.create_all(engine)
 
 ############################### PLAYER ########################################
 @app.post("/player", status_code=status.HTTP_201_CREATED,tags=['player'])
