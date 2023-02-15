@@ -39,6 +39,9 @@ This is what the API does :
 Player Endpoints
 
     POST /player: create a new player by passing the Player model in the request body. Returns the created player with the id property set.
+    example : {
+
+    }
     GET /player/{id}: get a player by their id. Returns the player object.
     GET /player/: get a list of all players. Returns a list of player objects.
     DELETE /player/{id}: delete a player by their id. Returns a message confirming the deletion.
@@ -70,7 +73,37 @@ Contract Endpoints
     GET /contract/{id}: get a contract by its id. Returns the contract object.
     PUT /contract/{id}: update a contract by its id, passing the updated ContractModel model in the request body. Returns the updated contract.
     DELETE /contract/{id}: delete a contract by its id. Returns a message confirming the deletion.
-## Improvement
+
+## Running the Ensaligue Web Server and Database with Docker Compose
+
+The Ensaligue web server and database can be easily launched using Docker Compose, along with a bash script that takes the necessary PostgreSQL username and password as arguments. This guide will explain how to launch the Ensaligue web server and database using Docker Compose and the `ensaligue.sh` script.
+
+### Prerequisites
+
+Before proceeding, make sure you have the following installed on your system:
+
+- Docker Compose
+- Bash
+
+### Steps
+
+1. Clone the Ensaligue repository to your local machine
+2. Change into the `ensaligue` directory : `cd ensaligue`
+3. Make the `ensaligue.sh` script executable : `chmod +x ensaligue.sh`
+4. Launch the web server and database using the `ensaligue.sh` script, along with the necessary PostgreSQL username and password as arguments, and a command specified from one of "build", "up", "stop", or "down". For example, to build the images and start the containers, use the following command: `./ensaligue.sh POSTGRES_USERNAME POSTGRES_PASSWORD build`
+
+Replace `POSTGRES_USERNAME` and `POSTGRES_PASSWORD` with the actual values for your PostgreSQL username and password.
+
+Alternatively, you can use one of the other available commands: "up" to create and start containers, "stop" to stop containers, or "down" to stop and remove containers, networks, images, and volumes.
+
+The Ensaligue web server and database should now be up and running in Docker Compose. You can access the web server at `http://127.0.0.1:8000`.
+
+The API documentation can be found at `http://127.0.0.1:8000/docs#`
+
+## Design Pattern
+The strategy design pattern has been used to adapt salary and contract end date calculations based on different types of contracts (internship or professional). This approach improves modularity, maintainability, flexibility, and testability, making it easier to modify or add new calculations in the future, add new types of contracts, and write unit tests for each strategy.
+
+## Improvements
 
 We could have added an "active" argument for teams and leagues. When a league becomes inactive then all teams lose their arpatenances to a league and must either become inactive or change leagues.
 
@@ -83,15 +116,9 @@ Currently deleting Team and League creates membership errors in the database (le
 
 Explanation of database creation:
 
-    Creation of a connection instance to the Postgresql database using the connection information stored in an .env file.
-
-    Creating an instance of the sqlite engine that will access the database.
-
-    Create a session instance from the sqlite connection.
-
     Creation of a declarative class instance (Base) that will be used to define the data models.
 
-    Definition of the data models: the player, team, league and contract tables.
+    Definition of the SqlAlchemy ORM data models : the player, team, league and contract tables.
 
     The player table contains the information on the football players (name, first name, date of birth and position).
 
@@ -112,3 +139,5 @@ Explanation of database creation:
 The architecture of the database is as follows:
 
 The database contains four tables: player, team, league and contract. The player table has a primary key id_player and columns name, surname, birth_date and position. The team table has a primary key id_team and columns name and id_league (foreign key of the league table). The league table has primary key id_league and columns name, country, level, professional_minimum_wage, daily_salary_first_year, daily_salary_second_year and daily_salary_third_year. The contract table has a primary key id_contract and columns id_player (foreign key of the player table), id_team (foreign key of the team table), date_start, date_end, total_salary and type_contract.
+
+
