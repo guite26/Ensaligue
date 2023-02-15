@@ -37,3 +37,7 @@ def new_total_salary(date_start, date_end,actual_salary_grid,new_salary_grid):
     print(past_duration)
     new_total_salary = sum([actual_salary_grid[i]*past_duration[i] + new_salary_grid[i]*remaning_duration[i] for i in range(len(init_duration)) ])
     return(new_total_salary)
+
+def in_progress(date_end) :
+    return date_end > datetime.now()
+

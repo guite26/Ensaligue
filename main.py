@@ -184,6 +184,13 @@ def add_cotract(contract: ContractModel):
     res = contractService.add_contract(contract)
     return res
 
+@app.post("/contract/{id_actual_contract}/prolongation", status_code=status.HTTP_201_CREATED,tags=['contract'])
+def add_contract_prolongation(contract : ContractModel ) :
+    contracService  =ContractService()
+    res = contracService.add_contract_prolongation(contract)
+    return res
+
+
 @app.get("/contract/{id}", status_code=status.HTTP_201_CREATED,tags=['contract'])
 def get_contract_by_id(id:int):
     contractService = ContractService()

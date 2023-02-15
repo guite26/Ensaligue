@@ -12,7 +12,6 @@ from business_objects.league import League
 
 from service.computation_intern_strategy import ComputationInternStrategy
 from service.computation_pro_strategy import ComputationProStrategy
-from service.teamService import TeamService
 from service.exceptions import InvalidAgeException, InvalidAgeOldException, InvalidAgeYoungException, InvalidDurationException, InvalidSalaryException
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -73,6 +72,8 @@ class ContractService():
 
     def add_contract(self,contract:ContractModel):
 
+        if self.contract_collision(contract) :
+            return {"message": "The player already has a contract in place for this date range"}
         if contract.duration and contract.duration<1:
             return {"message": "The duration has to be greater than 1 year"}
 
@@ -121,6 +122,8 @@ class ContractService():
 
         id = ContractDAO().add_contract(contract_db)
         return f"created contract with id {id}"
+    
+
 
         
     def get_contract_by_id(self,id : int) -> Dict:
@@ -161,8 +164,20 @@ class ContractService():
     def in_progress(self,contract : ContractDB) -> bool :
         return contract.date_end > datetime.now()
     
-    def is_valide(self, contract : ContractDB) -> bool :
-        pass
+
+
+    def check_date_collision(contract_1 : ContractDB, contract_2 : ContractDB)->bool :        
+        return (contract_1.date_start <= contract_2.date_end) and (contract_1.date_end >= contract_2.date_start)
+    
+
+
+    def contract_collision(self, contract : ContractDB) -> bool :
+        dao = ContractDAO()
+        contracts_player = dao.get_all_contracts_by_id_player(contract.id_player)
+        for contract_player in contracts_player :
+            if self.check_date_collision(contract_player,contract) :
+                return True
+        return False
 
 
     def stop_contract_by_id(self, id: int) -> Dict:
