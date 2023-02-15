@@ -90,7 +90,7 @@ Before proceeding, make sure you have the following installed on your system:
 1. Clone the Ensaligue repository to your local machine
 2. Change into the `ensaligue` directory : `cd ensaligue`
 3. Make the `ensaligue.sh` script executable : `chmod +x ensaligue.sh`
-4. Launch the web server and database using the `ensaligue.sh` script, along with the necessary PostgreSQL username and password as arguments, and a command specified from one of "build", "up", "stop", or "down". For example, to build the images and start the containers, use the following command: `./ensaligue.sh POSTGRES_USERNAME POSTGRES_PASSWORD build`
+4. Launch the web server and database using the `ensaligue.sh` script, along with the necessary PostgreSQL username and password as arguments, and a command specified from one of "build", "up", "stop", or "down". For example, to build the images and start the containers, use the following command: `./ensaligue.sh build POSTGRES_USERNAME POSTGRES_PASSWORD `
 
 Replace `POSTGRES_USERNAME` and `POSTGRES_PASSWORD` with the actual values for your PostgreSQL username and password.
 

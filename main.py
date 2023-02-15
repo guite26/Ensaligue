@@ -1,6 +1,7 @@
 from fastapi import FastAPI, status, APIRouter
 from fastapi.encoders import jsonable_encoder
 from database.database import Base, engine
+from database.init_db import create_initial_data
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from business_objects.player import Player
@@ -12,7 +13,6 @@ from service.playerService import PlayerService
 from service.teamService import TeamService
 from service.leagueService import LeagueService
 from service.contractService import ContractService
-
 
 router = APIRouter()
 
@@ -26,6 +26,10 @@ async def root():
 @app.on_event("startup")
 def startup():
     Base.metadata.create_all(engine)
+    with Session(engine) as session:
+        create_initial_data(session)
+        session.commit()
+
 
 ############################### PLAYER ########################################
 @app.post("/player", status_code=status.HTTP_201_CREATED,tags=['player'])

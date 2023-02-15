@@ -5,17 +5,8 @@ import os
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 from typing import Dict
-load_dotenv()
-url_object = URL.create(
-    drivername="postgresql+psycopg2",
-    username=os.environ.get('USER'),
-    password=os.environ.get('PASSWORD'),  # plain (unescaped) text
-    host=os.environ.get('HOST_WEBSERVICE'),
-    database=os.environ.get('DATABASE'),
-    port=os.environ.get('PORT')
-)
-# Create a sqlite engine instance
-engine = create_engine("sqlite:///ensaleague.db")
+
+engine = create_engine(os.getenv("DATABASE_URL"))
 session = Session(bind=engine)
 # Create a DeclarativeMeta instance
 Base = declarative_base()
