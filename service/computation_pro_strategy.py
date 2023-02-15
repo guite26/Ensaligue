@@ -33,23 +33,19 @@ class ComputationProStrategy(AbstractComputationStrategy):
             raise InvalidSalaryException()
         total_salary = salary/365.25 * (date_end-date_start).days
         print("TOTAL SALARY",total_salary)
-        return total_salary
+        return round(total_salary)
     
     def update_salary(self,new_min_salary:int, new_league_internal_salary_grid: List[float],date_start:date, date_end : date,salary:int,internal_salary_grid:List[float]):
         print("SALARY",salary)
         new_salary_hyp = self.compute_salary(new_min_salary, new_league_internal_salary_grid,date_start, date_end,new_min_salary)
         print("SALARY HYP",new_salary_hyp)
+
         if new_salary_hyp>salary:
             date_update = datetime.now().date()
-            print(date_start)
-            print(date_update)
-            print(date_end)
-            print("***********")
-            print((date_update - date_start).days)
-            print((date_end - date_update).days)
-            print((date_end- date_start).days)
-
-            new_total_salary = (date_update - date_start).days *salary/(date_end-date_start).days + (date_end - date_update).days *new_salary_hyp/(date_end-date_start).days
+            if date_update<date_start :
+                new_total_salary = new_salary_hyp
+            else : 
+                new_total_salary = (date_update - date_start).days *salary/(date_end-date_start).days + (date_end - date_update).days *new_salary_hyp/(date_end-date_start).days
             return round(new_total_salary)
         else : 
             return salary

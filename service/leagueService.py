@@ -6,7 +6,7 @@ from service.computation_pro_strategy import ComputationProStrategy
 from business_objects.league import League, LeagueModel
 from business_objects.contract import Contract
 from database.database import LeagueDB, ContractDB
-from datetime import date
+from datetime import date,datetime
 from service.utils import in_progress
 from typing import List, Dict
 
@@ -62,10 +62,10 @@ class LeagueService():
             league_class = League(existing_league.name,existing_league.country,existing_league.level,
             existing_league.professional_minimum_wage,[existing_league.daily_salary_first_year,existing_league.daily_salary_second_year,existing_league.daily_salary_third_year]
             )
+            
             all_contracts_dict = ContractService().get_all_contracts_by_id_league(id)
-
             for c in all_contracts_dict["contracts"]:
-                if in_progress(c['date_end']) : 
+                if (c['date_end']>datetime.now().date()) : 
                     contract = Contract(salary=c["total_salary"],date_start=c["date_start"], date_end= c["date_end"])
                     contract.league = league_class
                     if c["type_contract"] == "professional":
