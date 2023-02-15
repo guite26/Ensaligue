@@ -129,7 +129,6 @@ def update_team_league_after_relegation(id : int) :
 
 
 
-
 ############################### LEAGUE ########################################
 
 

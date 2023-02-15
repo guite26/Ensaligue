@@ -21,6 +21,11 @@ class ContractDAO():
         contractdb = session.get(entity=ContractDB,ident=id)
         return contractdb
 
+    def get_all_contracts_by_id_player(self,id_player : int) -> List[ContractDB]:
+        contractdb = session.query(ContractDB).filter_by(id_player = id_player).all()
+        return contractdb
+   
+
     def get_all_contracts(self) -> List[ContractDB] :
         # add it to the session and commit it
         all_contracts = session.query(ContractDB).all()

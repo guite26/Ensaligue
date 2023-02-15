@@ -20,7 +20,7 @@ class ContractModel(BaseModel):
     duration : Union[int,None] = None
     salary : Union[int,None] = None
     type_contract : Literal['professional','intern']
-  
+
 class Contract() :
     def __init__(self,player : Player = None,team : team_bo.Team = None,date_start : date = None,date_end:date = None,duration:int=None,salary:int=None) -> None:
         self.player = player
