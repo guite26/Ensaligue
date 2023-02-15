@@ -7,6 +7,7 @@ from business_objects.league import League, LeagueModel
 from business_objects.contract import Contract
 from database.database import LeagueDB, ContractDB
 from datetime import date
+from service.utils import in_progress
 from typing import List, Dict
 
 class LeagueService():
@@ -52,7 +53,7 @@ class LeagueService():
         else :
             return {"message":f'The league with id {id} does not exist'}
     
-            
+           
 
     def put_league_by_id(self, id: int, league: LeagueModel) -> Dict:
         dao = LeagueDAO()
@@ -64,14 +65,15 @@ class LeagueService():
             all_contracts_dict = ContractService().get_all_contracts_by_id_league(id)
 
             for c in all_contracts_dict["contracts"]:
-                contract = Contract(salary=c["total_salary"],date_start=c["date_start"], date_end= c["date_end"])
-                contract.league = league_class
-                if c["type_contract"] == "professional":
-                    contract.computation_strategy = ComputationProStrategy()
-                else : 
-                    contract.computation_strategy = ComputationInternStrategy()
-                contract.update(league.professional_minimum_wage,league.internSalaryGrid)
-                ContractDAO().update_contract(c["id_contract"],contract.salary)
+                if in_progress(c['date_end']) : 
+                    contract = Contract(salary=c["total_salary"],date_start=c["date_start"], date_end= c["date_end"])
+                    contract.league = league_class
+                    if c["type_contract"] == "professional":
+                        contract.computation_strategy = ComputationProStrategy()
+                    else : 
+                        contract.computation_strategy = ComputationInternStrategy()
+                    contract.update(league.professional_minimum_wage,league.internSalaryGrid)
+                    ContractDAO().update_contract(c["id_contract"],contract.salary)
             LeagueDAO().put_league_by_id(existing_league,league)
             return {"message": f"The league with id {id} has been updated"}
         else:

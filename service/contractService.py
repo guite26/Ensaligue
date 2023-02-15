@@ -71,8 +71,6 @@ class ContractService():
 
     def add_contract(self,contract:ContractModel):
 
-        if self.contract_collision(contract) :
-            return {"message": "The player already has a contract in place for this date range"}
         if contract.duration and contract.duration<1:
             return {"message": "The duration has to be greater than 1 year"}
 
@@ -103,7 +101,7 @@ class ContractService():
             contract_class.compute_duration()
             contract_class.compute_end_date()
             contract_class.compute_salary()
-
+        
         except InvalidSalaryException:
             return {"message": "The salary is below the minimum"}
         except InvalidAgeException:
@@ -119,6 +117,8 @@ class ContractService():
         date_start=contract.date_start,date_end=contract_class.date_end,
         total_salary=contract_class.salary, type_contract=contract.type_contract)
 
+        if self.contract_collision(contract_db) :
+            return {"message": "The player already has a contract in place for this date range"}
         id = ContractDAO().add_contract(contract_db)
         return f"created contract with id {id}"
     
@@ -165,7 +165,7 @@ class ContractService():
     
 
 
-    def check_date_collision(contract_1 : ContractDB, contract_2 : ContractDB)->bool :        
+    def check_date_collision(self,contract_1 : ContractDB, contract_2 : ContractDB)->bool :        
         return (contract_1.date_start <= contract_2.date_end) and (contract_1.date_end >= contract_2.date_start)
     
 
