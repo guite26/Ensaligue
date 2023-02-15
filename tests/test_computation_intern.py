@@ -15,11 +15,3 @@ class TestComputationIntern(TestCase) :
 
         #then
         self.assertEqual(salary,24865)
-
-
-
-
-
-
-
-
