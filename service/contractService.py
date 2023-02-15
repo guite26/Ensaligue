@@ -128,7 +128,6 @@ class ContractService():
     def get_contract_by_id(self,id : int) -> Dict:
         dao = ContractDAO()
         contractdb = dao.get_contract_by_id(id)
-        print("SERVICE",contractdb.__dict__)
         if contractdb:
             return contractdb.__dict__
         else :

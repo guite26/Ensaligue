@@ -29,12 +29,9 @@ def get_days_periods(date_start, date_end):
 
 def new_total_salary(date_start, date_end,actual_salary_grid,new_salary_grid):
     init_duration = get_days_periods(date_start,date_end)
-    print("INIT",init_duration)
 
     remaning_duration = get_days_periods(datetime.now().date(),date_end)
-    print("REMAIN",remaning_duration)
     past_duration = [init_duration[i] - remaning_duration[i] for i in range(len(init_duration))]
-    print("PAST",past_duration)
     new_total_salary = sum([actual_salary_grid[i]*past_duration[i] + new_salary_grid[i]*remaning_duration[i] for i in range(len(init_duration)) ])
     return(new_total_salary)
 

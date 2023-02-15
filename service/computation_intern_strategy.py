@@ -10,10 +10,7 @@ class ComputationInternStrategy(AbstractComputationStrategy):
         super().__init__()
     
     def compute_duration(self,player_birth_date: date, date_start: Optional[date] = None, duration: Optional[int] = None):
-        print(player_birth_date)
-        print(date_start)
         duration = (player_birth_date.year+19) - date_start.year if (date(date_start.year,6,30)<date_start) else player_birth_date.year +19 -date_start.year +1
-        print(duration)
         if duration <= 0 :
             raise InvalidAgeOldException()
         elif duration >=4 :
@@ -30,7 +27,6 @@ class ComputationInternStrategy(AbstractComputationStrategy):
 
     def compute_salary(self, min_salary:int,league_internal_salary_grid: List[float],date_start:date, date_end:date,salary:int=None):
         days_per_season = get_days_periods(date_start,date_end)
-        print(days_per_season)
         total_salary = sum(x*y for x, y in zip(days_per_season, league_internal_salary_grid))
         
         return total_salary

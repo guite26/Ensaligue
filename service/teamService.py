@@ -122,7 +122,7 @@ class TeamService():
 
     def update_team_contract(self,id_team:int,leagueA:LeagueDB,leagueB:LeagueDB):
         all_contracts_dict = ContractService().get_all_contracts_by_id_team(id_team)
-        new__minimum_salary = leagueB.professional_minimum_wage
+        new_minimum_salary = leagueB.professional_minimum_wage
         new_intern_salary_grid = [leagueB.daily_salary_first_year, leagueB.daily_salary_second_year,leagueB.daily_salary_third_year]
         leagueA_class = League(leagueA.name,leagueA.country,leagueA.level,
         leagueA.professional_minimum_wage,[leagueA.daily_salary_first_year,leagueA.daily_salary_second_year,leagueA.daily_salary_third_year]
@@ -135,7 +135,7 @@ class TeamService():
                     contract.computation_strategy = ComputationProStrategy()
                 else : 
                     contract.computation_strategy = ComputationInternStrategy()
-                contract.update(new__minimum_salary,new_intern_salary_grid)
+                contract.update(new_minimum_salary,new_intern_salary_grid)
                 ContractDAO().update_contract(c["id_contract"],contract.salary)
 
     
