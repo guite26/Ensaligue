@@ -3,7 +3,7 @@ from datetime import date,datetime
 from typing import Optional, List
 from service.exceptions import InvalidAgeOldException, InvalidAgeYoungException, InvalidDurationException
 
-from service.utils import new_total_salary
+from service.utils import new_total_salary, get_days_periods
 class ComputationInternStrategy(AbstractComputationStrategy):
 
     def __init__(self) -> None:
@@ -29,13 +29,8 @@ class ComputationInternStrategy(AbstractComputationStrategy):
         return date_end
 
     def compute_salary(self, min_salary:int,league_internal_salary_grid: List[float],date_start:date, date_end:date,salary:int=None):
-        duration = ((date_end - date_start).days)//365  if date_start.day == 30 & date_start.month == 6 else ((date_end - date_start).days)//365
-        days_per_season = [
-            0 if i < ((3-duration) %3) else 
-            (date(date_start.year, 6, 30) - date_start).days if date_start < date(date_start.year, 6, 30) else 
-            (date(date_start.year+1, 6, 30) - date_start).days if i == ((3-duration) %3) else 365 
-            for i in range(3)
-        ]
+        days_per_season = get_days_periods(date_start,date_end)
+        print(days_per_season)
         total_salary = sum(x*y for x, y in zip(days_per_season, league_internal_salary_grid))
         
         return total_salary

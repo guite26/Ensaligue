@@ -2,10 +2,15 @@ from dao.teamDAO import TeamDAO
 from dao.leagueDAO import LeagueDAO
 from dao.contractDAO import ContractDAO
 from business_objects.team import Team, TeamModel
-from database.database import TeamDB
-from datetime import date
+from business_objects.contract import Contract
+from business_objects.league import League
+from database.database import TeamDB, LeagueDB
+from datetime import date, datetime
 from typing import List, Dict
 from service.leagueService import LeagueService
+from service.contractService import ContractService
+from service.computation_intern_strategy import ComputationInternStrategy
+from service.computation_pro_strategy import ComputationProStrategy
 
 class TeamService():
     def __init__(self):
@@ -86,7 +91,9 @@ class TeamService():
         if team :
             if league.level !=1 :
                 try : 
-                    dao.update_team_league_after_promotion(team,league)
+                    new_league = LeagueDAO().get_new_league_after_promotion(league)
+                    self.update_team_contract(id_team,league,new_league)
+                    dao.update_team_league_after_promotion(team,new_league)
                     return {"message": f"The team with id {id_team} has been promoted to level {league.level -1}"}
                 except : 
                     return{"message": f"The league in country {league.country} whith level {league.level - 1 } does not exist"}
@@ -102,12 +109,33 @@ class TeamService():
         league = LeagueDAO().get_league_by_id(team.id_league)
         if team :
             try : 
-                dao.update_team_league_after_relegation(team,league)
+                new_league = LeagueDAO().get_new_league_after_relegation(league)
+                self.update_team_contract(id_team,league,new_league)
+                dao.update_team_league_after_relegation(team,new_league)
                 return {"message": f"The team with id {id_team} has been relegated to level {league.level +1}"}
             except :
                 return{"message": f"The league in country {league.country} whith level {league.level + 1 } does not exist"}
 
         else :
             return {"message": f"The team with id {id_team} does not exist"}
+
+
+    def update_team_contract(self,id_team:int,leagueA:LeagueDB,leagueB:LeagueDB):
+        all_contracts_dict = ContractService().get_all_contracts_by_id_team(id_team)
+        new__minimum_salary = leagueB.professional_minimum_wage
+        new_intern_salary_grid = [leagueB.daily_salary_first_year, leagueB.daily_salary_second_year,leagueB.daily_salary_third_year]
+        leagueA_class = League(leagueA.name,leagueA.country,leagueA.level,
+        leagueA.professional_minimum_wage,[leagueA.daily_salary_first_year,leagueA.daily_salary_second_year,leagueA.daily_salary_third_year]
+        )
+        for c in all_contracts_dict["contracts"]:
+            if (c['date_end']>datetime.now().date()) : 
+                contract = Contract(salary=c["total_salary"],date_start=c["date_start"], date_end= c["date_end"])
+                contract.league = leagueA_class
+                if c["type_contract"] == "professional":
+                    contract.computation_strategy = ComputationProStrategy()
+                else : 
+                    contract.computation_strategy = ComputationInternStrategy()
+                contract.update(new__minimum_salary,new_intern_salary_grid)
+                ContractDAO().update_contract(c["id_contract"],contract.salary)
 
     

@@ -22,13 +22,13 @@ class LeagueDAO():
 
         return leaguedb
 
-    def get_new_id_league_after_promotion(self,league_currently : LeagueDB) -> int:
+    def get_new_league_after_promotion(self,league_currently : LeagueDB) -> LeagueDB:
         league = session.query(LeagueDB).filter_by(country = league_currently.country, level = league_currently.level -1 ).first()
-        return league.id_league
+        return league
 
-    def get_new_id_league_after_relegation(self,league_currently : LeagueDB) -> int:
+    def get_new_league_after_relegation(self,league_currently : LeagueDB) -> LeagueDB:
         league = session.query(LeagueDB).filter_by(country = league_currently.country, level = league_currently.level +1 ).first()
-        return league.id_league
+        return league
 
     def get_all_leagues(self) -> List[LeagueDB] :
         # add it to the session and commit it
