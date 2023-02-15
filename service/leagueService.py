@@ -5,7 +5,7 @@ from service.computation_intern_strategy import ComputationInternStrategy
 from service.computation_pro_strategy import ComputationProStrategy
 from business_objects.league import League, LeagueModel
 from business_objects.contract import Contract
-from database.database import LeagueDB
+from database.database import LeagueDB, ContractDB
 from datetime import date
 from typing import List, Dict
 
@@ -68,12 +68,11 @@ class LeagueService():
                 contract.league = league_class
                 if c["type_contract"] == "professional":
                     contract.computation_strategy = ComputationProStrategy()
-                    contract.update(league.professional_minimum_wage,league.internSalaryGrid)
                 else : 
                     contract.computation_strategy = ComputationInternStrategy()
-                    contract.update(league.professional_minimum_wage,league.internSalaryGrid)
-
-            
+                contract.update(league.professional_minimum_wage,league.internSalaryGrid)
+                ContractDAO().update_contract(c["id_contract"],contract.salary)
+            LeagueDAO().put_league_by_id(existing_league,league)
             return {"message": f"The league with id {id} has been updated"}
         else:
             return {"message": f"The league with id {id} does not exist"}  

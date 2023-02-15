@@ -1,5 +1,6 @@
 from database.database import ContractDB, engine, session
 from sqlalchemy.orm import Query
+from sqlalchemy import update
 from typing import List
 from datetime import datetime
 class ContractDAO():
@@ -33,11 +34,13 @@ class ContractDAO():
         existing_contract.date_end = datetime.now()
         session.commit()
         return existing_contract
-    
-    def update_contract(self,contract : ContractDB,new_salary:int) :
-        contract.total_salary = new_salary
-        session.commit()
-        return contract
 
+    def update_contract(self,id_contract,new_salary):
+        print("NEW SALARY",new_salary)
+        session.execute(
+        update(ContractDB).where(ContractDB.id_contract == id_contract).values(total_salary=new_salary)
+        )
+        session.commit()
+        print("PASSE")
     
 

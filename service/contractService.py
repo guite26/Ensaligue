@@ -2,7 +2,7 @@ from dao.playerDAO import PlayerDAO
 from dao.leagueDAO import LeagueDAO
 from dao.teamDAO import TeamDAO
 from dao.contractDAO import ContractDAO
-from database.database import ContractDB, PlayerDB, TeamDB, LeagueDB
+from database.database import ContractDB
 from typing import List, Dict
 
 from business_objects.contract import Contract, ContractModel
@@ -12,10 +12,8 @@ from business_objects.league import League
 
 from service.computation_intern_strategy import ComputationInternStrategy
 from service.computation_pro_strategy import ComputationProStrategy
-from service.teamService import TeamService
 from service.exceptions import InvalidAgeException, InvalidAgeOldException, InvalidAgeYoungException, InvalidDurationException, InvalidSalaryException
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
 class ContractService():
 

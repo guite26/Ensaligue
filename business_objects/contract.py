@@ -30,17 +30,17 @@ class Contract() :
         self.duration = duration
         self.salary = salary
         self._computation_strategy : AbstractComputationStrategy
-        self.league : League = team.league
+        self._league = None
     @property
     def computation_strategy(self):
         return self._computation_strategy
     
     @property
     def league(self):
-        return self.league
+        return self._league
     @league.setter
     def league(self,league:League):
-        self.league = league
+        self._league = league
     
     @computation_strategy.setter
     def computation_strategy(self,computation_strategy:AbstractComputationStrategy):
